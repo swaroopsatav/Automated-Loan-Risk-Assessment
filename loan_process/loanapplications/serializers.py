@@ -1,0 +1,101 @@
+from rest_framework import serializers
+from .models import LoanApplication, LoanDocument
+from users.models import CustomUser
+
+
+# --- Document Serializer ---
+class LoanDocumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoanDocument
+        fields = ['id', 'loan', 'document_type', 'file', 'uploaded_at']
+        read_only_fields = ['id', 'uploaded_at']
+        validators = [
+            serializers.UniqueTogetherValidator(
+                queryset=LoanDocument.objects.all(),
+                fields=['loan', 'document_type']
+            )
+        ]
+
+
+# --- User-facing Loan Create Serializer ---
+class LoanApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoanApplication
+        fields = [
+            'id', 'amount_requested', 'purpose', 'term_months',
+            'monthly_income', 'existing_loans',
+        ]
+
+    def validate_amount_requested(self, value):
+        if not isinstance(value, (int, float)) or value <= 0:
+            raise serializers.ValidationError("The loan amount must be a positive number.")
+        return value
+
+    def validate_term_months(self, value):
+        if not isinstance(value, int) or value < 1 or value > 360:
+            raise serializers.ValidationError("The loan term must be an integer between 1 and 360 months.")
+        return value
+
+    def validate_monthly_income(self, value):
+        if not isinstance(value, (int, float)) or value <= 0:
+            raise serializers.ValidationError("Monthly income must be a positive number.")
+        return value
+
+
+# --- Detail Serializer for User Viewing Their Loan ---
+class LoanApplicationDetailSerializer(serializers.ModelSerializer):
+    documents = LoanDocumentSerializer(many=True, read_only=True)
+    user = serializers.StringRelatedField()
+    status = serializers.CharField(source='get_status_display')
+    ai_decision = serializers.CharField(source='get_ai_decision_display')
+
+    class Meta:
+        model = LoanApplication
+        fields = [
+            'id', 'user', 'amount_requested', 'purpose', 'term_months',
+            'monthly_income', 'existing_loans', 'credit_score_records',
+            'risk_score', 'ai_decision', 'status',
+            'submitted_at', 'reviewed_at', 'notes',
+            'ml_scoring_output', 'documents'
+        ]
+        read_only_fields = [
+            'id', 'user', 'risk_score', 'ai_decision', 'status',
+            'submitted_at', 'reviewed_at', 'notes',
+            'ml_scoring_output', 'documents', 'credit_score_records'
+        ]
+
+
+# --- Admin: Full Loan Serializer ---
+class AdminLoanApplicationSerializer(serializers.ModelSerializer):
+    documents = LoanDocumentSerializer(many=True, read_only=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), required=True)
+    amount_requested = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
+    status = serializers.CharField(source='get_status_display')
+    ai_decision = serializers.CharField(source='get_ai_decision_display')
+
+    class Meta:
+        model = LoanApplication
+        fields = '__all__'
+
+    def validate_amount_requested(self, value):
+        if not isinstance(value, (int, float)) or value <= 0:
+            raise serializers.ValidationError("The loan amount must be a positive number.")
+        return value
+
+    def validate(self, data):
+        if data.get('existing_loans') and data.get('risk_score', 0) > 80:
+            raise serializers.ValidationError(
+                "High-risk applicants with existing loans cannot apply for new loans."
+            )
+
+        if data.get('credit_score_records', 0) < 500:
+            raise serializers.ValidationError(
+                "Application cannot be processed due to low credit score."
+            )
+
+        if data.get('monthly_income', 0) < data.get('amount_requested', 0) / 12:
+            raise serializers.ValidationError(
+                "Monthly income is insufficient for the requested loan amount."
+            )
+
+        return data
