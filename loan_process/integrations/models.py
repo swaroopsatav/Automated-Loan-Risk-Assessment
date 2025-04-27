@@ -2,10 +2,12 @@ from django.db import models
 from users.models import CustomUser
 from loanapplications.models import LoanApplication
 from django.core.validators import MinLengthValidator, MaxLengthValidator, MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
+
 
 class MockKYCRecord(models.Model):
     """
-    Simulated response from a real-world KYC API (PAN + Aadhaar verification).
+    Simulated response from a real-world KYC API (PAN + Aadhaar verification). 
     """
     user = models.OneToOneField(
         CustomUser,
@@ -76,6 +78,7 @@ class MockKYCRecord(models.Model):
     mock_response = models.JSONField(
         blank=True,
         null=True,
+        default=dict,
         help_text="The raw mock response from the KYC API."
     )
     created_at = models.DateTimeField(
@@ -90,6 +93,7 @@ class MockKYCRecord(models.Model):
 
     def __str__(self):
         return f"Mock KYC: {self.user.username}"
+
 
 class MockExperianReport(models.Model):
     """
@@ -163,14 +167,17 @@ class MockExperianReport(models.Model):
     tradelines = models.JSONField(
         blank=True,
         null=True,
+        default=list,
         help_text="The tradelines in the credit report."
     )
     enquiries = models.JSONField(
         blank=True,
         null=True,
+        default=list,
         help_text="The enquiries in the credit report."
     )
     mock_raw_report = models.JSONField(
+        default=dict,
         help_text="The raw mock API response for the credit report."
     )
     created_at = models.DateTimeField(
@@ -192,6 +199,6 @@ class MockExperianReport(models.Model):
             return
 
         if self.active_accounts > self.total_accounts:
-            raise models.ValidationError('Active accounts cannot exceed total accounts')
+            raise ValidationError('Active accounts cannot exceed total accounts')
         if self.overdue_accounts > self.active_accounts:
-            raise models.ValidationError('Overdue accounts cannot exceed active accounts')
+            raise ValidationError('Overdue accounts cannot exceed active accounts')
