@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from datetime import date
@@ -88,6 +89,10 @@ class ModelPerformanceLog(models.Model):
         default=0.0
     )
     auc_score = models.FloatField(
+        validators=[MinValueValidator(0.0), MaxValueValidator(1.0)],
+        default=0.0
+    )
+    f1_score = models.FloatField(
         validators=[MinValueValidator(0.0), MaxValueValidator(1.0)],
         default=0.0
     )

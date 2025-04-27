@@ -1,8 +1,9 @@
 from django.core.management.base import BaseCommand
-from loan_applications.models import LoanApplication
-from loan_applications.ml.scoring import score_loan_application
+from loanapplications.models import LoanApplication
+from loanapplications.ml.scoring import score_loan_application
 import logging
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -41,7 +42,7 @@ class Command(BaseCommand):
 
         scored_count = 0
         failed_count = 0
-        batch_size = options['batch-size']
+        batch_size = options['batch_size']
 
         # Process in batches
         for i in range(0, loans.count(), batch_size):
@@ -50,10 +51,13 @@ class Command(BaseCommand):
             for loan in batch:
                 try:
                     with transaction.atomic():
-                        if not hasattr(loan, 'mock_experian'):
-                            raise LoanApplication.mock_experian.RelatedObjectDoesNotExist
+                        try:
+                            report = loan.mock_experian
+                            if not report:
+                                raise ObjectDoesNotExist
+                        except ObjectDoesNotExist:
+                            raise ValueError("No Experian report found")
 
-                        report = loan.mock_experian
                         user = loan.user
 
                         # Validate required data
@@ -66,21 +70,23 @@ class Command(BaseCommand):
                             'credit_util_pct': max(0, min(100, report.credit_utilization_pct or 0)),
                             'dpd_max': max(0, report.dpd_max or 0),
                             'emi_to_income_ratio': max(0, report.emi_to_income_ratio or 0),
-                            'monthly_income': max(0, loan.monthly_income),
-                            'existing_loans': max(0, int(loan.existing_loans or 0)),
+                            'monthly_income': float(max(0, loan.monthly_income)),
+                            'existing_loans': int(loan.existing_loans),
                         }
 
                         # Call scoring function
                         risk_score, decision, explanation = score_loan_application(features)
 
                         # Validate scoring results
-                        if not all([isinstance(risk_score, (int, float)),
-                                    decision in ['approve', 'reject'],
-                                    explanation]):
-                            raise ValueError("Invalid scoring results")
+                        if risk_score is None or not isinstance(risk_score, (int, float)):
+                            raise ValueError("Invalid risk score")
+                        if decision not in ['approve', 'reject', 'manual_review']:
+                            raise ValueError("Invalid decision")
+                        if not explanation or not isinstance(explanation, dict):
+                            raise ValueError("Invalid explanation")
 
                         # Update loan fields with AI decision and scoring results
-                        loan.risk_score = risk_score
+                        loan.risk_score = float(risk_score)
                         loan.ai_decision = decision
                         loan.ml_scoring_output = explanation
 
@@ -95,9 +101,9 @@ class Command(BaseCommand):
                         # Log success
                         logger.info(f"Loan #{loan.id} scored: Decision={decision}, Risk Score={risk_score}")
 
-                except LoanApplication.mock_experian.RelatedObjectDoesNotExist:
+                except ValueError as e:
                     failed_count += 1
-                    error_message = f"⚠️ Loan #{loan.id} skipped: No Experian report found."
+                    error_message = f"⚠️ Loan #{loan.id} skipped: {str(e)}"
                     self.stdout.write(self.style.WARNING(error_message))
                     logger.warning(error_message)
 

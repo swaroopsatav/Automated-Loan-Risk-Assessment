@@ -28,8 +28,7 @@ def score_and_record(loan_application):
             'term_months': int(loan_application.term_months or 0),
             'monthly_income': float(loan_application.monthly_income or 0),
             'existing_loans': int(loan_application.existing_loans or 0),
-            'credit_score': int(loan_application.credit_score or 0),
-            'credit_util_pct': float(loan_application.credit_util_pct or 0),
+
         }
 
         # Validate required fields

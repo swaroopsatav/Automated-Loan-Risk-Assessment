@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from users.models import CustomUser
 from loanapplications.models import LoanApplication
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -88,13 +89,13 @@ class CreditScoreRecord(models.Model):
 
     def clean(self):
         if self.risk_score < 0 or self.risk_score > 1:
-            raise models.ValidationError({'risk_score': 'Risk score must be between 0 and 1'})
+            raise ValidationError({'risk_score': 'Risk score must be between 0 and 1'})
         if self.credit_utilization_pct and (self.credit_utilization_pct < 0 or self.credit_utilization_pct > 100):
-            raise models.ValidationError({'credit_utilization_pct': 'Credit utilization must be between 0 and 100'})
+            raise ValidationError({'credit_utilization_pct': 'Credit utilization must be between 0 and 100'})
         if self.dpd_max and self.dpd_max < 0:
-            raise models.ValidationError({'dpd_max': 'Days past due cannot be negative'})
+            raise ValidationError({'dpd_max': 'Days past due cannot be negative'})
         if self.emi_to_income_ratio and (self.emi_to_income_ratio < 0 or self.emi_to_income_ratio > 1):
-            raise models.ValidationError({'emi_to_income_ratio': 'EMI to income ratio must be between 0 and 1'})
+            raise ValidationError({'emi_to_income_ratio': 'EMI to income ratio must be between 0 and 1'})
 
     def save(self, *args, **kwargs):
         self.clean()

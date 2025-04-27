@@ -6,19 +6,18 @@ from sklearn.preprocessing import StandardScaler
 import joblib
 import os
 import logging
+from logging.handlers import RotatingFileHandler
 
 import xgboost as xgb
 import lightgbm as lgb
 
 # Configure logging with rotation
-logging.basicConfig(
-    filename='ml_training.log',
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.RotatingFileHandler('ml_training.log', maxBytes=1024 * 1024, backupCount=5)
-    ]
-)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+handler = RotatingFileHandler('ml_training.log', maxBytes=1024 * 1024, backupCount=5)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 class Command(BaseCommand):
@@ -45,7 +44,7 @@ class Command(BaseCommand):
         if not os.path.exists(file_path):
             msg = f"❌ CSV file not found at {file_path}. Run export_training_data first."
             self.stdout.write(self.style.ERROR(msg))
-            logging.error(msg)
+            logger.error(msg)
             return
 
         try:
@@ -61,7 +60,7 @@ class Command(BaseCommand):
             if missing_cols:
                 msg = f"❌ Missing columns in CSV file: {', '.join(missing_cols)}"
                 self.stdout.write(self.style.ERROR(msg))
-                logging.error(msg)
+                logger.error(msg)
                 return
 
             # Handle missing values
@@ -87,9 +86,9 @@ class Command(BaseCommand):
                 X, y, test_size=0.2, stratify=y, random_state=42
             )
 
-            # Train XGBoost with better parameters
+            # Train XGBoost with better parameters 
             self.stdout.write("🚀 Training XGBoost model...")
-            logging.info("Training XGBoost model...")
+            logger.info("Training XGBoost model...")
             xgb_model = xgb.XGBClassifier(
                 n_estimators=200,
                 learning_rate=0.1,
@@ -119,11 +118,11 @@ class Command(BaseCommand):
                 f"✅ XGBoost model saved to {output_dir}/xgboost_loan_model.pkl"
             ))
             self.stdout.write("📊 XGBoost Report:\n" + xgb_report)
-            logging.info("XGBoost training complete. Report:\n" + xgb_report)
+            logger.info("XGBoost training complete. Report:\n" + xgb_report)
 
             # Train LightGBM with better parameters
             self.stdout.write("🚀 Training LightGBM model...")
-            logging.info("Training LightGBM model...")
+            logger.info("Training LightGBM model...")
             lgb_model = lgb.LGBMClassifier(
                 n_estimators=200,
                 learning_rate=0.1,
@@ -151,7 +150,7 @@ class Command(BaseCommand):
                 f"✅ LightGBM model saved to {output_dir}/lightgbm_loan_model.pkl"
             ))
             self.stdout.write("📊 LightGBM Report:\n" + lgb_report)
-            logging.info("LightGBM training complete. Report:\n" + lgb_report)
+            logger.info("LightGBM training complete. Report:\n" + lgb_report)
 
             # Save feature names for future reference
             joblib.dump(list(X.columns), os.path.join(output_dir, "feature_names.pkl"))
@@ -159,5 +158,5 @@ class Command(BaseCommand):
         except Exception as e:
             msg = f"❌ An error occurred: {str(e)}"
             self.stdout.write(self.style.ERROR(msg))
-            logging.error(msg, exc_info=True)
+            logger.error(msg, exc_info=True)
             raise

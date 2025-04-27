@@ -73,11 +73,11 @@ class ComplianceCheck(models.Model):
     )
     is_compliant = models.BooleanField(default=False,
                                        help_text="Indicates whether the compliance check passed all requirements.")
-    checked_on = models.DateTimeField(
-        auto_now=True,
-        help_text="The timestamp when the compliance check was last updated.",
-        null=True
-    )
+    # checked_on = models.DateTimeField(
+    #     auto_now=True,
+    #     help_text="The timestamp when the compliance check was last updated.",
+    #     null=True
+    # )
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Compliance Check'
@@ -132,3 +132,5 @@ class ComplianceAuditTrail(models.Model):
 
     def __str__(self):
         return f"{self.actor} - {self.get_action_display()} - Loan #{self.loan_application.id}"
+
+

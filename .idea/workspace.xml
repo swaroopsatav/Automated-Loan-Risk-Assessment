@@ -4,11 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="26/04/2025,9:55 PM">
+    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="27/04/2025,1:32 PM">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/compliances/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/compliances/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/compliances/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/compliances/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/compliances/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/compliances/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/creditscorings/management/commands/score_and_record.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/creditscorings/management/commands/score_and_record.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/creditscorings/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/creditscorings/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/creditscorings/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/creditscorings/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/creditscorings/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/creditscorings/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/loan_process/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/integrations/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/integrations/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/integrations/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/integrations/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/management/commands/train_loan_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/management/commands/train_loan_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/ml/xgboost_credit_model.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/riskdashboards/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/riskdashboards/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/riskdashboards/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/riskdashboards/tests.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +69,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/PycharmProjects/Automated_Loan_Processing_-_Risk_Assessment&quot;,
@@ -114,7 +125,8 @@
       <updated>1745671363732</updated>
       <workItem from="1745671366158" duration="9226000" />
       <workItem from="1745682888146" duration="2239000" />
-      <workItem from="1745732562875" duration="8221000" />
+      <workItem from="1745732562875" duration="9165000" />
+      <workItem from="1745741859471" duration="21418000" />
     </task>
     <task id="LOCAL-00001" summary="26/04/2025,6:33 PM">
       <option name="closed" value="true" />
@@ -148,7 +160,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745684743116</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="27/04/2025,1:32 PM">
+      <option name="closed" value="true" />
+      <created>1745740948351</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1745740948351</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -162,6 +182,7 @@
     <MESSAGE value="26/04/2025,7:00 PM" />
     <MESSAGE value="26/04/2025,8:44 PM" />
     <MESSAGE value="26/04/2025,9:55 PM" />
-    <option name="LAST_COMMIT_MESSAGE" value="26/04/2025,9:55 PM" />
+    <MESSAGE value="27/04/2025,1:32 PM" />
+    <option name="LAST_COMMIT_MESSAGE" value="27/04/2025,1:32 PM" />
   </component>
 </project>

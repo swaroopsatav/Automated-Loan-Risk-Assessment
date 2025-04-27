@@ -9,7 +9,7 @@ class ComplianceCheckAdmin(admin.ModelAdmin):
     """
     list_display = (
         'loan_application', 'check_type', 'is_compliant',
-        'user', 'checked_on', 'created_at',
+        'user', 'created_at',
     )
     list_filter = ('check_type', 'is_compliant', 'user', 'created_at')
     search_fields = ('loan_application__id', 'user__username', 'check_notes')
@@ -19,7 +19,7 @@ class ComplianceCheckAdmin(admin.ModelAdmin):
             'fields': ('loan_application', 'check_type', 'is_compliant', 'notes'),
         }),
         ("Review Details", {
-            'fields': ('user', 'checked_on', 'check_notes'),
+            'fields': ('user', 'check_notes'),
             'classes': ('collapse',),
         }),
         ("Metadata", {
@@ -27,7 +27,7 @@ class ComplianceCheckAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
         }),
     )
-    readonly_fields = ('created_at', 'checked_on')
+    readonly_fields = ('created_at',)
     autocomplete_fields = ('loan_application', 'user')
     date_hierarchy = 'created_at'
 
