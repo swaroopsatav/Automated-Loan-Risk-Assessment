@@ -4,53 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="27/04/2025,1:32 PM">
-      <change afterPath="$PROJECT_DIR$/.idea/Python-Project.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/eslint.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/public/vite.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/App.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/App.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/assets/react.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/compliance/ComplianceAuditTrail.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/compliance/ComplianceCheckUpdate.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/compliance/LoanComplianceChecks.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/compliance/api.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/AdminScoreDetail.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/AdminScoreList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/RescoreButton.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/ScoreViewer.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/scoreApi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/integrations/AdminMockExperianList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/integrations/MockExperianViewer.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/integrations/MockKYCViewer.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/integrations/api.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDetail.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDocumentUpload.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanSubmitForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/MyLoanList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/api.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/main.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/ModelPerformanceLog.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/RiskSnapshotList.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/RiskTrendChart.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/api.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/LoginForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/Navbar.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/PrivateRoute.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/Profile.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/RegisterForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/api.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/auth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/vite.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="28/04/2025,10:39 AM">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/compliances/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/compliances/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/LoginForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/LoginForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/Navbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/PrivateRoute.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/PrivateRoute.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/Profile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/Profile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/RegisterForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/RegisterForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/auth.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +147,7 @@
       <workItem from="1745732562875" duration="9165000" />
       <workItem from="1745741859471" duration="21418000" />
       <workItem from="1745813989524" duration="124000" />
-      <workItem from="1745814114706" duration="2686000" />
+      <workItem from="1745814114706" duration="4970000" />
     </task>
     <task id="LOCAL-00001" summary="26/04/2025,6:33 PM">
       <option name="closed" value="true" />
@@ -227,7 +189,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745740948351</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="28/04/2025,10:39 AM">
+      <option name="closed" value="true" />
+      <created>1745817008904</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1745817008904</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -242,6 +212,7 @@
     <MESSAGE value="26/04/2025,8:44 PM" />
     <MESSAGE value="26/04/2025,9:55 PM" />
     <MESSAGE value="27/04/2025,1:32 PM" />
-    <option name="LAST_COMMIT_MESSAGE" value="27/04/2025,1:32 PM" />
+    <MESSAGE value="28/04/2025,10:39 AM" />
+    <option name="LAST_COMMIT_MESSAGE" value="28/04/2025,10:39 AM" />
   </component>
 </project>
