@@ -172,7 +172,7 @@ class CustomUserModelTest(TestCase):
 
     def test_document_upload_path(self):
         path = self.user.id_proof.field.upload_to(self.user, "test_document.pdf")
-        self.assertFalse(path.startswith("kyc_documents/user_"))
+        self.assertTrue(path.startswith("kyc_documents/user_"))
         self.assertTrue(path.endswith(".pdf"))
 
     def test_string_representation(self):
