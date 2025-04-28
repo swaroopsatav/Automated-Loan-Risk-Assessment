@@ -10,11 +10,11 @@ class ComplianceCheckForm(forms.ModelForm):
 
     class Meta:
         model = ComplianceCheck
-        fields = ['check_type', 'is_compliant', 'user', 'checked_on', 'check_notes']
-        widgets = {
-            'checked_on': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'check_notes': forms.Textarea(attrs={'rows': 4}),
-        }
+        fields = ['check_type', 'is_compliant', 'user']
+        # widgets = {
+        #     'checked_on': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        #     'check_notes': forms.Textarea(attrs={'rows': 4}),
+        # }
 
     def clean(self):
         """
@@ -38,10 +38,9 @@ class ComplianceAuditTrailForm(forms.ModelForm):
 
     class Meta:
         model = ComplianceAuditTrail
-        fields = ['actor', 'loan_application', 'action', 'timestamp', 'notes']
+        fields = ['actor', 'loan_application', 'action', 'notes']
         widgets = {
             'notes': forms.Textarea(attrs={'rows': 4, 'readonly': 'readonly'}),
-            'timestamp': forms.DateTimeInput(attrs={'readonly': 'readonly'}),
         }
 
     def __init__(self, *args, **kwargs):

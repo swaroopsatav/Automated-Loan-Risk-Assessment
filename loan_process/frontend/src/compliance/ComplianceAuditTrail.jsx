@@ -1,0 +1,28 @@
+import React, { useEffect, useState } from 'react';
+import complianceAPI from './api';
+
+const ComplianceAuditTrail = () => {
+  const [logs, setLogs] = useState([]);
+
+  useEffect(() => {
+    complianceAPI.get('compliance/audit-trail/').then(res => setLogs(res.data));
+  }, []);
+
+  return (
+    <div className="p-4 max-w-4xl mx-auto">
+      <h2 className="text-xl font-bold mb-4">Compliance Audit Trail</h2>
+      <ul className="space-y-3">
+        {logs.map(log => (
+          <li key={log.id} className="bg-white p-3 shadow rounded text-sm">
+            <p><strong>{log.actor}</strong> on Loan #{log.loan_id}:</p>
+            <p>→ {log.action}</p>
+            <p className="text-gray-500">{new Date(log.timestamp).toLocaleString()}</p>
+            {log.notes && <p className="italic text-gray-600 mt-1">{log.notes}</p>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default ComplianceAuditTrail;
