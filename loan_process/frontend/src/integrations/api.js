@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const integrationsAPI = axios.create({ baseURL: '/api/' });
+const integrationsAPI = axios.create({ baseURL: 'http://localhost:8000/' });
 
 // Add a request interceptor to include the Authorization header if the token exists
 integrationsAPI.interceptors.request.use(

@@ -1,0 +1,185 @@
+2025-04-28 12:54:43,669 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,690 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,692 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,695 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,698 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,702 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,705 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,709 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,712 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,713 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,715 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,716 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,718 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 12:54:43,726 - ERROR - ❌ An error occurred: Mock CSV read error
+Traceback (most recent call last):
+  File "/home/aspl-81/PycharmProjects/Python-Project/loan_process/loanapplications/management/commands/train_loan_model.py", line 52, in handle
+    df = pd.read_csv(file_path)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+Exception: Mock CSV read error
+2025-04-28 12:54:43,729 - ERROR - ❌ CSV file not found at nonexistent.csv. Run export_training_data first.
+2025-04-28 12:54:43,731 - ERROR - ❌ Missing columns in CSV file: monthly_income, employment_status, existing_loans, credit_history_fetched, amount_requested, term_months, loan_to_income_ratio, credit_util_pct, emi_to_income_ratio, dpd_max, overdue_accounts, total_accounts, bureau_score, score_band, is_kyc_verified, govt_id_type, age, address_length, loan_approved
+2025-04-28 12:54:43,744 - ERROR - ❌ An error occurred: "['loan_approved'] not found in axis"
+Traceback (most recent call last):
+  File "/home/aspl-81/PycharmProjects/Python-Project/loan_process/loanapplications/management/commands/train_loan_model.py", line 73, in handle
+    X = df.drop(columns=['loan_approved'])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['loan_approved'] not found in axis"
+2025-04-28 14:19:45,794 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,797 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,800 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,804 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,807 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,812 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,815 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,818 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,821 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,823 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,824 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,825 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,827 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:19:45,835 - ERROR - ❌ An error occurred: Mock CSV read error
+Traceback (most recent call last):
+  File "/home/aspl-81/PycharmProjects/Python-Project/loan_process/loanapplications/management/commands/train_loan_model.py", line 52, in handle
+    df = pd.read_csv(file_path)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+Exception: Mock CSV read error
+2025-04-28 14:19:45,837 - ERROR - ❌ CSV file not found at nonexistent.csv. Run export_training_data first.
+2025-04-28 14:19:45,839 - ERROR - ❌ Missing columns in CSV file: monthly_income, employment_status, existing_loans, credit_history_fetched, amount_requested, term_months, loan_to_income_ratio, credit_util_pct, emi_to_income_ratio, dpd_max, overdue_accounts, total_accounts, bureau_score, score_band, is_kyc_verified, govt_id_type, age, address_length, loan_approved
+2025-04-28 14:19:45,849 - ERROR - ❌ An error occurred: "['loan_approved'] not found in axis"
+Traceback (most recent call last):
+  File "/home/aspl-81/PycharmProjects/Python-Project/loan_process/loanapplications/management/commands/train_loan_model.py", line 73, in handle
+    X = df.drop(columns=['loan_approved'])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['loan_approved'] not found in axis"
+2025-04-28 14:21:20,745 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,748 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,751 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,754 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,757 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,761 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,764 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,768 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,770 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,772 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,773 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,774 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,776 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:21:20,784 - ERROR - ❌ An error occurred: Mock CSV read error
+Traceback (most recent call last):
+  File "/home/aspl-81/PycharmProjects/Python-Project/loan_process/loanapplications/management/commands/train_loan_model.py", line 52, in handle
+    df = pd.read_csv(file_path)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+Exception: Mock CSV read error
+2025-04-28 14:21:20,786 - ERROR - ❌ CSV file not found at nonexistent.csv. Run export_training_data first.
+2025-04-28 14:21:20,789 - ERROR - ❌ Missing columns in CSV file: monthly_income, employment_status, existing_loans, credit_history_fetched, amount_requested, term_months, loan_to_income_ratio, credit_util_pct, emi_to_income_ratio, dpd_max, overdue_accounts, total_accounts, bureau_score, score_band, is_kyc_verified, govt_id_type, age, address_length, loan_approved
+2025-04-28 14:21:20,796 - ERROR - ❌ An error occurred: "['loan_approved'] not found in axis"
+Traceback (most recent call last):
+  File "/home/aspl-81/PycharmProjects/Python-Project/loan_process/loanapplications/management/commands/train_loan_model.py", line 73, in handle
+    X = df.drop(columns=['loan_approved'])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['loan_approved'] not found in axis"
+2025-04-28 14:53:26,002 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,004 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,006 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,010 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,014 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,018 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,022 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,025 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,028 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,031 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,032 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,033 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,035 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.
+2025-04-28 14:53:26,044 - ERROR - ❌ An error occurred: Mock CSV read error
+Traceback (most recent call last):
+  File "/home/aspl-81/PycharmProjects/Python-Project/loan_process/loanapplications/management/commands/train_loan_model.py", line 52, in handle
+    df = pd.read_csv(file_path)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+Exception: Mock CSV read error
+2025-04-28 14:53:26,046 - ERROR - ❌ CSV file not found at nonexistent.csv. Run export_training_data first.
+2025-04-28 14:53:26,048 - ERROR - ❌ Missing columns in CSV file: monthly_income, employment_status, existing_loans, credit_history_fetched, amount_requested, term_months, loan_to_income_ratio, credit_util_pct, emi_to_income_ratio, dpd_max, overdue_accounts, total_accounts, bureau_score, score_band, is_kyc_verified, govt_id_type, age, address_length, loan_approved
+2025-04-28 14:53:26,058 - ERROR - ❌ An error occurred: "['loan_approved'] not found in axis"
+Traceback (most recent call last):
+  File "/home/aspl-81/PycharmProjects/Python-Project/loan_process/loanapplications/management/commands/train_loan_model.py", line 73, in handle
+    X = df.drop(columns=['loan_approved'])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/frame.py", line 5581, in drop
+    return super().drop(
+           ^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 4788, in drop
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/generic.py", line 4830, in _drop_axis
+    new_axis = axis.drop(labels, errors=errors)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aspl-81/.local/lib/python3.12/site-packages/pandas/core/indexes/base.py", line 7070, in drop
+    raise KeyError(f"{labels[mask].tolist()} not found in axis")
+KeyError: "['loan_approved'] not found in axis"
+2025-04-28 16:39:52,977 - ERROR - ❌ CSV file not found at loan_training_data.csv. Run export_training_data first.

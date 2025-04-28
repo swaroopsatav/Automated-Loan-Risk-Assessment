@@ -16,12 +16,12 @@ const LoginForm = () => {
         setIsLoading(true); // Show loading indicator
 
         try {
-            const data = await loginUser(form);
-
-            if (data?.access) {
+            const response = await loginUser(form);
+            console.log('Login response:', response);
+            if (response.data?.access) {
                 navigate('/profile');
             } else {
-                setError(data?.message || 'Invalid username or password.'); // Use server error message if available
+                setError(response?.message || 'Invalid username or password.'); // Use server error message if available
             }
         } catch (err) {
             setError('Something went wrong. Please try again later.'); // Handle network or unexpected errors

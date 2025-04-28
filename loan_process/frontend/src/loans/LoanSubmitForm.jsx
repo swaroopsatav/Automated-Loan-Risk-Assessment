@@ -22,7 +22,7 @@ const LoanSubmitForm = () => {
     setIsSubmitting(true);
     setMessage('');
     try {
-      await loanAPI.post('loans/submit/', form);
+      await loanAPI.post('api/loans/submission/', form);
       setMessage('Loan submitted successfully.');
     } catch (err) {
       console.error('Error submitting loan:', err);

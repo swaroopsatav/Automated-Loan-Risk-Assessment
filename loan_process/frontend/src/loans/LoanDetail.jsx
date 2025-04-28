@@ -11,7 +11,7 @@ const LoanDetail = () => {
   useEffect(() => {
     const fetchLoan = async () => {
       try {
-        const response = await loanAPI.get(`loans/mine/${id}/`);
+        const response = await loanAPI.get(`api/loans/${id}/`);
         setLoan(response.data);
       } catch (err) {
         console.error('Error fetching loan details:', err);

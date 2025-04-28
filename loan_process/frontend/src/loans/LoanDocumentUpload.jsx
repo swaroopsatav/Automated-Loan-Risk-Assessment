@@ -20,7 +20,7 @@ const LoanDocumentUpload = ({ loanId }) => {
     data.append('document_type', form.document_type);
     data.append('file', form.file);
     try {
-      await loanAPI.post('loans/documents/', data);
+      await loanAPI.post('api/loans/${id}/documents/', data);
       setMessage('Uploaded successfully!');
     } catch (err) {
       console.error('Error uploading document:', err);

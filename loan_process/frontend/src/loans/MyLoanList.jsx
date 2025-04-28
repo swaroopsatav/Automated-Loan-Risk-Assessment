@@ -10,7 +10,8 @@ const MyLoanList = () => {
   useEffect(() => {
     const fetchLoans = async () => {
       try {
-        const response = await loanAPI.get('loans/mine/');
+        const response = await loanAPI.get('api/loans/');
+        console.log(response.data);
         setLoans(response.data);
       } catch (err) {
         console.error('Error fetching loans:', err);

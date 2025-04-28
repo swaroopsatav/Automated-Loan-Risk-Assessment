@@ -2,7 +2,7 @@ import API from './api';
 
 export const loginUser = async (credentials) => {
   try {
-    const res = await API.post('/api/login/', credentials);
+    const res = await API.post('/api/users/auth/login/', credentials);
     const data = res.data;
 
     if (data.access && data.refresh) {

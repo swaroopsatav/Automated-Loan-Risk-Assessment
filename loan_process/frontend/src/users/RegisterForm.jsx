@@ -8,6 +8,7 @@ const RegisterForm = () => {
     username: '',
     email: '',
     password: '',
+      password2: '',
     phone_number: '',
     date_of_birth: '',
     address: '',
@@ -48,9 +49,12 @@ const RegisterForm = () => {
     });
 
     try {
-      const response = await API.post('/api/register/', form, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const response = await API.post('api/users/auth/register/', form,{
+            headers: {
+            'Content-Type': 'multipart/form-data'
+            }
+        });
+      console.log('Registration response:', response);
       setMessage('Registration successful! Redirecting to login...');
       setTimeout(() => navigate('/login'), 2000); // Redirect after 2 seconds
     } catch (err) {
@@ -94,6 +98,15 @@ const RegisterForm = () => {
         type="password"
         placeholder="Password"
         value={formData.password}
+        onChange={handleChange}
+        required
+      />
+        <input
+        className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        name="password2"
+        type="password"
+        placeholder="ConFirm Password"
+        value={formData.password2}
         onChange={handleChange}
         required
       />

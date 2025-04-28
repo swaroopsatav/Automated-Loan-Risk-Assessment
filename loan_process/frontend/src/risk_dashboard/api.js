@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Create an axios instance for risk-related API calls
-const riskAPI = axios.create({ baseURL: '/api/' });
+const riskAPI = axios.create({ baseURL: 'http://localhost:8000/' });
 
 // Add request interceptor for including authentication token
 riskAPI.interceptors.request.use(

@@ -12,7 +12,7 @@ app_name = 'loans'
 
 urlpatterns = [
     # --- User-facing ---
-    path('submit/', LoanApplicationCreateView.as_view(), name='loan-submit'),
+    path('submission/', LoanApplicationCreateView.as_view(), name='loan-submit'),
     path('', UserLoanListView.as_view(), name='my-loans'),
     path('<int:pk>/', UserLoanDetailView.as_view(), name='my-loan-detail'),
     path('<int:loan_id>/documents/', LoanDocumentUploadView.as_view(), name='loan-documents'),

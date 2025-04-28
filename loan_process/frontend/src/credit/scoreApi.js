@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an axios instance with a base URL
 const scoreApi = axios.create({
-  baseURL: '/api/',
+  baseURL: 'http://localhost:8000/',
 });
 
 // Add a request interceptor for including the authentication token
