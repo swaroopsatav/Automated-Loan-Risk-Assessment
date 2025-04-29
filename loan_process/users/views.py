@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.exceptions import NotFound, ValidationError
 from .models import CustomUser
 from .serializers import (
+    UserSerializer,
     UserRegistrationSerializer,
     UserDetailSerializer,
     SecureUserSerializer,
@@ -24,27 +25,32 @@ class RegisterUserView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
+        # Call the parent's `create` method to perform the registration logic
         try:
             response = super().create(request, *args, **kwargs)
+            # Add a success message
             response.data["message"] = "User registered successfully."
             return response
         except ValidationError as e:
+            # If validation fails, return a custom error message
             return Response(
-                {"error": str(e)},
+                {"error": str(e)},  # Return the stringified validation error
                 status=status.HTTP_400_BAD_REQUEST
             )
-
 
 # --- Login View (JWT-based) ---
 class LoginView(APIView):
     """
     Handles user login and returns JWT tokens.
     """
+    serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         username = request.data.get("username", "").strip()
+        email = request.data.get("email", "").strip()
         password = request.data.get("password", "").strip()
+
 
         if not username or not password:
             return Response(
@@ -53,7 +59,7 @@ class LoginView(APIView):
             )
 
         try:
-            user = authenticate(username=username, password=password)
+            user = authenticate(username=username,email=email,password=password)
 
             if not user:
                 return Response(
@@ -84,6 +90,11 @@ class LoginView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
+    def get(self, request):
+        return Response(
+            {"error": "Login is only available via POST."},
+            status=status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
 
 # --- Authenticated User Profile (GET, PUT) ---
 class UserProfileView(generics.RetrieveUpdateAPIView):

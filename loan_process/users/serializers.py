@@ -7,7 +7,9 @@ from .models import CustomUser
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        exclude = ('password',)
+        fields = [
+            'username', 'password',
+        ]
         extra_kwargs = {
             'is_superuser': {'read_only': True},
             'is_staff': {'read_only': True},
@@ -19,6 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
 
+
 # Serializer for registration (public-facing)  
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
@@ -26,6 +29,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     id_proof = serializers.FileField(required=False, allow_null=True)
     address_proof = serializers.FileField(required=False, allow_null=True)
     income_proof = serializers.FileField(required=False, allow_null=True)
+    phone_number = serializers.CharField(required=False, allow_null=True)
+    govt_id_number = serializers.CharField(required=False, allow_null=True)
 
     class Meta:
         model = CustomUser
@@ -37,7 +42,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'id_proof', 'address_proof', 'income_proof'
         ]
         extra_kwargs = {
-            'email': {'required': True},
+            'password': {'required': True},
             'username': {'required': True},
         }
 
@@ -48,6 +53,15 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
         if data['password'] != data['password2']:
             raise serializers.ValidationError({"password": "Passwords do not match."})
+
+        if 'phone_number' in data:
+            phone_number = data['phone_number']
+            if phone_number:
+                phone_number = phone_number.strip()
+                if not phone_number.isdigit():
+                    raise serializers.ValidationError({"phone_number": "Phone number must contain only digits."})
+                if len(phone_number) != 10:
+                    raise serializers.ValidationError({"phone_number": "Phone number must be exactly 10 digits."})
 
         return data
 
@@ -78,7 +92,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 class SecureUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'is_kyc_verified']
+        fields = ['username','password']
         read_only_fields = fields
 
 

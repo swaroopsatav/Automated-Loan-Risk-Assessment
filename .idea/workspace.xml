@@ -4,13 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="29/04/2025,3.53 PM">
+    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="29/04/2025,4:08 PM">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDocumentUpload.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDocumentUpload.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanSubmitForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanSubmitForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/MyLoanList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/MyLoanList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/LoginForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/LoginForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/users/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/users/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +162,7 @@
       <workItem from="1745741859471" duration="21418000" />
       <workItem from="1745813989524" duration="124000" />
       <workItem from="1745814114706" duration="28730000" />
-      <workItem from="1745899555540" duration="19271000" />
+      <workItem from="1745899555540" duration="27743000" />
     </task>
     <task id="LOCAL-00001" summary="26/04/2025,6:33 PM">
       <option name="closed" value="true" />
@@ -340,7 +340,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745922224964</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="29/04/2025,4:08 PM">
+      <option name="closed" value="true" />
+      <created>1745923152479</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1745923152479</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -372,7 +380,8 @@
     <MESSAGE value="29/04/2025,10:25 AM" />
     <MESSAGE value="29/04/2025,10:59 AM" />
     <MESSAGE value="29/04/2025,3.53 PM" />
-    <option name="LAST_COMMIT_MESSAGE" value="29/04/2025,3.53 PM" />
+    <MESSAGE value="29/04/2025,4:08 PM" />
+    <option name="LAST_COMMIT_MESSAGE" value="29/04/2025,4:08 PM" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -384,10 +393,6 @@
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/loan_process/loanapplications/management/commands/export_training_data.py</url>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/loan_process/users/serializers.py</url>
-          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

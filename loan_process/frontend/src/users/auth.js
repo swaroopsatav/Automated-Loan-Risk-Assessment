@@ -13,7 +13,7 @@ export const loginUser = async ({username, password}) => {
             password
         });
 
-        if (!response.ok) {
+        if (response.status !== 200) {
             return {
                 success: false,
                 message: response.data.detail || 'Login failed.'

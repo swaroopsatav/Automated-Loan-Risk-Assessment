@@ -10,7 +10,7 @@ const LoginForm = () => {
 
     const handleChange = (e) => {
         const {name, value} = e.target;
-        setForm((prevState) => ({...prevState, [name]: value.trim()}));
+        setForm((prevState) => ({...prevState, [name]: value}));
     };
 
     const handleSubmit = async (e) => {
@@ -18,15 +18,26 @@ const LoginForm = () => {
         setError('');
         setIsLoading(true);
 
+        if (!form.username || !form.password) {
+            setError('Please enter both username and password');
+            setIsLoading(false);
+            return;
+        }
+
         try {
-            const response = await loginUser(form);
+            const response = await loginUser({
+                username: form.username.trim(),
+                password: form.password
+            });
             if (response.success) {
+                window.dispatchEvent(new Event('loginStateChanged'));
                 navigate('/profile');
             } else {
-                setError(response.message);
+                setError(response.message || 'Invalid credentials');
             }
         } catch (err) {
-            setError('Unable to connect to the server. Please try again later.');
+            console.error('Login error:', err);
+            setError(err.response?.data?.detail || err.message || 'Unable to connect to the server. Please try again later.');
         } finally {
             setIsLoading(false);
         }
@@ -51,6 +62,7 @@ const LoginForm = () => {
                     onChange={handleChange}
                     placeholder="Username"
                     required
+                    autoComplete="username"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
@@ -62,9 +74,11 @@ const LoginForm = () => {
                     onChange={handleChange}
                     placeholder="Password"
                     required
+                    autoComplete="current-password"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
+
             <button
                 type="submit"
                 disabled={isLoading}
