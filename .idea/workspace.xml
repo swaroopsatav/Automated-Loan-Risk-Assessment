@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="29/04/2025,9:39 AM">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="29/04/2025,10:14 AM">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/management/commands/cleanup_inactive_users.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/management/commands/cleanup_inactive_users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/management/commands/generate_mock_users.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/management/commands/generate_mock_users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/users/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/tests.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +157,7 @@
       <workItem from="1745741859471" duration="21418000" />
       <workItem from="1745813989524" duration="124000" />
       <workItem from="1745814114706" duration="28730000" />
-      <workItem from="1745899555540" duration="2045000" />
+      <workItem from="1745899555540" duration="2950000" />
     </task>
     <task id="LOCAL-00001" summary="26/04/2025,6:33 PM">
       <option name="closed" value="true" />
@@ -311,7 +303,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745899757612</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="29/04/2025,10:14 AM">
+      <option name="closed" value="true" />
+      <created>1745901867919</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1745901867919</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -339,7 +339,8 @@
     <MESSAGE value="28/04/2025,6:07 PM" />
     <MESSAGE value="28/04/2025,6:39 PM" />
     <MESSAGE value="29/04/2025,9:39 AM" />
-    <option name="LAST_COMMIT_MESSAGE" value="29/04/2025,9:39 AM" />
+    <MESSAGE value="29/04/2025,10:14 AM" />
+    <option name="LAST_COMMIT_MESSAGE" value="29/04/2025,10:14 AM" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
