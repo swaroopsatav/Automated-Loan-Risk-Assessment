@@ -1,8 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import API from './api';
 
 const Profile = () => {
     const [profile, setProfile] = useState(null);
+    profile.last_experian_sync = undefined;
+    profile.credit_score = undefined;
+    profile.is_kyc_verified = undefined;
     const [isLoading, setIsLoading] = useState(true); // Loading state
     const [error, setError] = useState(''); // Error state
 
@@ -13,9 +16,13 @@ const Profile = () => {
                 setProfile(res.data);
             } catch (err) {
                 console.error('Error fetching profile:', err);
-                setError('Failed to load profile. Please try again later.');
+                setError(
+                    err.response?.status === 401
+                        ? 'Unauthorized access. Please log in again.'
+                        : 'Failed to load profile. Please try again later.'
+                );
             } finally {
-                setIsLoading(false); // Stop loading once request is done
+                setIsLoading(false); // Stop loading once the request is done
             }
         };
 
@@ -30,68 +37,36 @@ const Profile = () => {
         return <p className="text-center text-red-600">{error}</p>; // Display an error message
     }
 
+    // Utility function for rendering readonly fields
+    const renderField = (label, value, type = 'text') => (
+        <div>
+            <label className="block font-bold">{label}:</label>
+            <input
+                type={type}
+                value={value}
+                readOnly
+                aria-readonly="true"
+                className="w-full border p-2 rounded"
+            />
+        </div>
+    );
+
     return (
         <div className="p-4 max-w-xl mx-auto">
             <h2 className="text-xl font-bold">My Profile</h2>
             {profile ? (
-                <form className="mt-4 space-y-2">
-                    <div>
-                        <label className="block font-bold">Username:</label>
-                        <input
-                            type="text"
-                            value={profile.username}
-                            readOnly
-                            className="w-full border p-2 rounded"
-                        />
-                    </div>
-                    <div>
-                        <label className="block font-bold">Email:</label>
-                        <input
-                            type="email"
-                            value={profile.email}
-                            readOnly
-                            className="w-full border p-2 rounded"
-                        />
-                    </div>
-                    <div>
-                        <label className="block font-bold">Phone:</label>
-                        <input
-                            type="text"
-                            value={profile.phone_number}
-                            readOnly
-                            className="w-full border p-2 rounded"
-                        />
-                    </div>
-                    <div>
-                        <label className="block font-bold">KYC Verified:</label>
-                        <input
-                            type="text"
-                            value={profile.is_kyc_verified ? '✅' : '❌'}
-                            readOnly
-                            className="w-full border p-2 rounded"
-                        />
-                    </div>
-                    <div>
-                        <label className="block font-bold">Credit Score:</label>
-                        <input
-                            type="text"
-                            value={profile.credit_score ?? 'N/A'}
-                            readOnly
-                            className="w-full border p-2 rounded"
-                        />
-                    </div>
-                    <div>
-                        <label className="block font-bold">Experian Sync:</label>
-                        <input
-                            type="text"
-                            value={profile.last_experian_sync ?? 'N/A'}
-                            readOnly
-                            className="w-full border p-2 rounded"
-                        />
-                    </div>
+                <form className="mt-4 space-y-4">
+                    {renderField('Username', profile.username)}
+                    {renderField('Email', profile.email, 'email')}
+                    {renderField('Phone', profile.phone_number ?? 'N/A')}
+                    {renderField('KYC Verified', profile.is_kyc_verified ? '✅' : '❌')}
+                    {renderField('Credit Score', profile.credit_score ?? 'N/A')}
+                    {renderField('Experian Sync', profile.last_experian_sync ?? 'N/A')}
                 </form>
             ) : (
-                <p className="text-center">No profile data available.</p>
+                <p className="text-center">
+                    No profile data available. Please ensure you are logged in.
+                </p>
             )}
         </div>
     );

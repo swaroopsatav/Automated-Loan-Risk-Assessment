@@ -13,7 +13,8 @@ const refreshAccessToken = async () => {
       throw new Error('No refresh token available');
     }
 
-    const response = await axios.post(`${API.defaults.baseURL}api/token/refresh/`, {
+    // Send a request to refresh the token
+    const response = await API.post('api/token/refresh/', {
       refresh: refreshToken,
     });
 
@@ -22,30 +23,43 @@ const refreshAccessToken = async () => {
     return access;
   } catch (error) {
     console.error('Failed to refresh token:', error);
+
+    // Clean up tokens on failure
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
-    throw error; // If token refresh fails, log the user out or redirect them
+
+    // Optionally, redirect the user to the login page here
+    window.location.href = '/login'; // Redirect to login page
+    throw error; // Re-throw the error for further handling
   }
 };
 
-// Attach access token if available and refresh token if expired
+// Attach an access token if available and refresh the token if expired
 API.interceptors.request.use(
   async (config) => {
-    let token = localStorage.getItem('access');
+    try {
+      let token = localStorage.getItem('access');
 
-    if (token) {
-      const tokenExpiry = JSON.parse(atob(token.split('.')[1])).exp * 1000; // Decode the token expiry time
-      const currentTime = Date.now();
+      if (token) {
+        // Decode the token to check expiry
+        const tokenPayload = JSON.parse(atob(token.split('.')[1])); // Decode the token payload
+        const tokenExpiry = tokenPayload.exp * 1000; // Convert expiry to milliseconds
+        const currentTime = Date.now();
 
-      if (currentTime >= tokenExpiry) {
-        // Token has expired, attempt to refresh it
-        token = await refreshAccessToken();
+        // Refresh the token if it has expired
+        if (currentTime >= tokenExpiry) {
+          token = await refreshAccessToken();
+        }
+
+        // Attach the token to the request headers
+        config.headers.Authorization = `Bearer ${token}`;
       }
 
-      config.headers.Authorization = `Bearer ${token}`;
+      return config;
+    } catch (error) {
+      console.error('Error attaching token to request:', error);
+      return Promise.reject(error);
     }
-
-    return config;
   },
   (error) => {
     return Promise.reject(error);
@@ -55,12 +69,14 @@ API.interceptors.request.use(
 // Global error handling for responses
 API.interceptors.response.use(
   (response) => response, // Pass through successful responses
-  async (error) => {
+  (error) => {
     if (error.response && error.response.status === 401) {
       console.error('Unauthorized access - possible invalid token');
+
+      // Clean up tokens and redirect to log in
       localStorage.removeItem('access');
       localStorage.removeItem('refresh');
-      // Optionally, redirect the user to the login page here
+      window.location.href = '/login'; // Redirect to the login page
     }
     return Promise.reject(error);
   }
