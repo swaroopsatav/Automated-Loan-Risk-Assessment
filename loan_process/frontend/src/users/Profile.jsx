@@ -9,7 +9,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const res = await API.get('api/users/me/');
+                const res = await API.get('/api/users/me/');
                 setProfile(res.data);
             } catch (err) {
                 console.error('Error fetching profile:', err);

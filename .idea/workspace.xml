@@ -4,42 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="29/04/2025,7.10 PM">
-      <change afterPath="$PROJECT_DIR$/.junie/guidelines.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loan_process/loan_training_data.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loan_training_data.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113211.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113211.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113211_EhwuAnO.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113427.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113427.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113427_5lphXw5.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/ml_models/feature_names.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/ml_models/feature_scaler.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/ml_models/lightgbm_loan_model.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/ml_models/xgboost_loan_model.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/users/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ml_training.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/fa8bb732-7075-416e-88d9-8ac8aaf0ac7a.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/fa8bb732-7075-416e-88d9-8ac8aaf0ac7a/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="30/04/2025,1.08 PM">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/compliance/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/compliance/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/credit/scoreApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/scoreApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/integrations/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/integrations/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/LoginForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/LoginForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/management/commands/export_training_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/management/commands/export_training_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/management/commands/generate_mock_loans.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/management/commands/generate_mock_loans.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/management/commands/train_loan_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/management/commands/train_loan_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/ml/scoring.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/ml/scoring.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/ml_training.log" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/ml_training.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/Profile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/Profile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/RegisterForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/RegisterForm.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,7 +161,7 @@
       <workItem from="1745814114706" duration="28730000" />
       <workItem from="1745899555540" duration="30103000" />
       <workItem from="1745986173355" duration="10498000" />
-      <workItem from="1745996991486" duration="1715000" />
+      <workItem from="1745996991486" duration="3979000" />
     </task>
     <task id="LOCAL-00001" summary="26/04/2025,6:33 PM">
       <option name="closed" value="true" />
@@ -395,7 +363,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745934054239</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="30/04/2025,1.08 PM">
+      <option name="closed" value="true" />
+      <created>1745998733257</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1745998733257</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -405,7 +381,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="26/04/2025,6:33 PM" />
     <MESSAGE value="26/04/2025,7:00 PM" />
     <MESSAGE value="26/04/2025,8:44 PM" />
     <MESSAGE value="26/04/2025,9:55 PM" />
@@ -430,7 +405,8 @@
     <MESSAGE value="29/04/2025,4:08 PM" />
     <MESSAGE value="29/04/2025,6:31 PM" />
     <MESSAGE value="29/04/2025,7.10 PM" />
-    <option name="LAST_COMMIT_MESSAGE" value="29/04/2025,7.10 PM" />
+    <MESSAGE value="30/04/2025,1.08 PM" />
+    <option name="LAST_COMMIT_MESSAGE" value="30/04/2025,1.08 PM" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

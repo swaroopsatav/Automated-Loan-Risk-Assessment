@@ -68,7 +68,7 @@ const RegisterForm = () => {
         if (formData.password !== formData.password2) {
             newErrors.password2 = 'Passwords do not match';
         }
-        if (formData.password.length === 8) {
+        if (formData.password.length < 8) {
             newErrors.password = 'Password must be at least 8 characters';
         }
 
@@ -117,7 +117,7 @@ const RegisterForm = () => {
         });
 
         try {
-            const response = await API.post('api/users/auth/register/', form, {
+            const response = await API.post('/api/users/auth/register/', form, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
