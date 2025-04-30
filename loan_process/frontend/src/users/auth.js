@@ -8,10 +8,7 @@ import API from './api';
  */
 export const loginUser = async ({username, password}) => {
     try {
-        const response = await API.post('/api/users/auth/login/', {
-            username,
-            password
-        });
+        const response = await API.post('/api/users/auth/login/', { username, password });
 
         if (response.status !== 200) {
             return {
@@ -25,15 +22,9 @@ export const loginUser = async ({username, password}) => {
         if (access && refresh) {
             localStorage.setItem('access', access);
             localStorage.setItem('refresh', refresh);
-            return {
-                success: true,
-                message: 'Login successful.'
-            };
+            return { success: true, message: 'Login successful.' };
         } else {
-            return {
-                success: false,
-                message: 'Invalid response: Access or refresh token missing.'
-            };
+            return { success: false, message: 'Invalid response: Access or refresh token missing.' };
         }
 
     } catch (err) {
@@ -44,7 +35,6 @@ export const loginUser = async ({username, password}) => {
         };
     }
 };
-
 /**
  * Logs out the user by clearing tokens from localStorage.
  * Optionally, you can redirect the user to the login page or perform other actions.

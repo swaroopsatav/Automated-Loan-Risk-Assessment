@@ -15,34 +15,34 @@ const LoginForm = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        setIsLoading(true);
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
 
-        if (!form.username || !form.password) {
-            setError('Please enter both username and password');
-            setIsLoading(false);
-            return;
-        }
+    if (!form.username || !form.password) {
+        setError('Please enter both username and password');
+        setIsLoading(false);
+        return;
+    }
 
-        try {
-            const response = await loginUser({
-                username: form.username.trim(),
-                password: form.password
-            });
-            if (response.success) {
-                window.dispatchEvent(new Event('loginStateChanged'));
-                navigate(AUTH_CONFIG.profileUrl);
-            } else {
-                setError(response.message || 'Invalid credentials');
-            }
-        } catch (err) {
-            console.error('Login error:', err);
-            setError(err.response?.data?.detail || err.message || 'Unable to connect to the server. Please try again later.');
-        } finally {
-            setIsLoading(false);
+    try {
+        const response = await loginUser({
+            username: form.username.trim(),
+            password: form.password
+        });
+        if (response.success) {
+            window.dispatchEvent(new Event('loginStateChanged'));
+            navigate(AUTH_CONFIG.profileUrl);
+        } else {
+            setError(response.message || 'Invalid credentials');
         }
-    };
+    } catch (err) {
+        console.error('Login error:', err);
+        setError(err.response?.data?.detail || err.message || 'Unable to connect to the server. Please try again later.');
+    } finally {
+        setIsLoading(false);
+    }
+};
 
     return (
         <form
