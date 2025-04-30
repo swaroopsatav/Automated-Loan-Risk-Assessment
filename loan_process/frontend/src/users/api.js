@@ -1,9 +1,11 @@
 // api.js
 import axios from 'axios';
+import { API_CONFIG, AUTH_CONFIG } from '../config';
 
 const API = axios.create({
-  baseURL: 'http://localhost:8000/',
-  headers: { 'Content-Type': 'application/json' },
+  baseURL: API_CONFIG.baseURL,
+  headers: API_CONFIG.headers,
+  timeout: API_CONFIG.timeout,
 });
 
 // Flag to prevent multiple refresh calls
@@ -18,7 +20,7 @@ const refreshAccessToken = async () => {
     }
 
     // Call refresh endpoint
-    const response = await axios.post('http://localhost:8000/api/token/refresh/', {
+    const response = await API.post('/api/token/refresh/', {
       refresh: refreshToken,
     });
 
@@ -31,7 +33,7 @@ const refreshAccessToken = async () => {
     // Clear tokens and redirect
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
-    window.location.href = '/login';
+    window.location.href = AUTH_CONFIG.loginRedirectUrl;
     throw error;
   }
 };
@@ -49,9 +51,8 @@ API.interceptors.request.use(
         const payload = JSON.parse(atob(parts[1]));
         const tokenExpiry = payload.exp * 1000;
         const currentTime = Date.now();
-        const EXPIRY_BUFFER = 30 * 1000; // 30s buffer
 
-        if (currentTime + EXPIRY_BUFFER >= tokenExpiry && !isRefreshing) {
+        if (currentTime + AUTH_CONFIG.tokenExpiryBuffer >= tokenExpiry && !isRefreshing) {
           isRefreshing = true;
           token = await refreshAccessToken();
           isRefreshing = false;
@@ -77,7 +78,7 @@ API.interceptors.response.use(
       console.warn('Unauthorized - redirecting to login');
       localStorage.removeItem('access');
       localStorage.removeItem('refresh');
-      window.location.href = '/login';
+      window.location.href = AUTH_CONFIG.loginRedirectUrl;
     }
     return Promise.reject(error);
   }

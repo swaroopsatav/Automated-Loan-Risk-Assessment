@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {loginUser} from './auth';
 import {useNavigate} from 'react-router-dom';
+import {AUTH_CONFIG} from '../config';
 
 const LoginForm = () => {
     const [form, setForm] = useState({username: '', password: ''});
@@ -31,7 +32,7 @@ const LoginForm = () => {
             });
             if (response.success) {
                 window.dispatchEvent(new Event('loginStateChanged'));
-                navigate('/profile');
+                navigate(AUTH_CONFIG.profileUrl);
             } else {
                 setError(response.message || 'Invalid credentials');
             }

@@ -1,7 +1,12 @@
 import axios from 'axios';
+import { API_CONFIG, AUTH_CONFIG } from '../config';
 
 // Create an axios instance for compliance-related API calls
-const complianceAPI = axios.create({ baseURL: 'http://127.0.0.1:8000/api/' });
+const complianceAPI = axios.create({
+  baseURL: API_CONFIG.baseURL,
+  headers: API_CONFIG.headers,
+  timeout: API_CONFIG.timeout,
+});
 
 // Add a request interceptor to include the authentication token
 complianceAPI.interceptors.request.use(
@@ -28,7 +33,7 @@ complianceAPI.interceptors.response.use(
       console.error('Response error:', error.response);
       if (error.response.status === 401) {
         console.error('Unauthorized request. Redirecting to login...');
-        window.location.href = '/login';
+        window.location.href = AUTH_CONFIG.loginRedirectUrl;
       }
     } else if (error.request) {
       console.error('No response received:', error.request);

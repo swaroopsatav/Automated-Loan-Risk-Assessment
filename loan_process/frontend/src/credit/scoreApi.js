@@ -1,8 +1,11 @@
 import axios from 'axios';
+import { API_CONFIG, AUTH_CONFIG } from '../config';
 
 // Create an axios instance with a base URL
 const scoreApi = axios.create({
-  baseURL: 'http://localhost:8000/',
+  baseURL: API_CONFIG.baseURL,
+  headers: API_CONFIG.headers,
+  timeout: API_CONFIG.timeout,
 });
 
 // Add a request interceptor for including the authentication token
@@ -36,7 +39,7 @@ scoreApi.interceptors.response.use(
       if (error.response.status === 401) {
         // Handle token expiration or unauthorized access
         console.error('Unauthorized request. Redirecting to login...');
-        window.location.href = '/login'; // Redirect to login page
+        window.location.href = AUTH_CONFIG.loginRedirectUrl; // Redirect to login page
       }
     } else if (error.request) {
       // Handle errors where no response was received

@@ -1,7 +1,12 @@
 import axios from 'axios';
+import { API_CONFIG, AUTH_CONFIG } from '../config';
 
 // Create an axios instance for risk-related API calls
-const riskAPI = axios.create({ baseURL: 'http://localhost:8000/' });
+const riskAPI = axios.create({
+  baseURL: API_CONFIG.baseURL,
+  headers: API_CONFIG.headers,
+  timeout: API_CONFIG.timeout,
+});
 
 // Add request interceptor for including authentication token
 riskAPI.interceptors.request.use(
@@ -28,7 +33,9 @@ riskAPI.interceptors.response.use(
       console.error('Response error:', error.response);
       if (error.response.status === 401) {
         console.error('Unauthorized request. Redirecting to login...');
-        window.location.href = '/login';
+        localStorage.removeItem('access');
+        localStorage.removeItem('refresh');
+        window.location.href = AUTH_CONFIG.loginRedirectUrl;
       }
     } else if (error.request) {
       console.error('No response received:', error.request);

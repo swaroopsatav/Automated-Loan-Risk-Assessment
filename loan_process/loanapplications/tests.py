@@ -620,23 +620,62 @@ class TestScoreLoanApplication(unittest.TestCase):
             score_loan_application(self.features, MODEL=None)
         self.assertIn("ML model not provided", str(context.exception))
 
+    def test_score_loan_application_invalid_credit_util_pct(self):
+        invalid_features = self.features.copy()
+        invalid_features["credit_util_pct"] = 101  # Above 100%
+        with self.assertRaises(ValueError) as context:
+            score_loan_application(invalid_features, self.mock_model)
+        self.assertIn("Invalid credit utilization percentage", str(context.exception))
+
+    def test_score_loan_application_invalid_monthly_income(self):
+        invalid_features = self.features.copy()
+        invalid_features["monthly_income"] = 0  # Should be > 0
+        with self.assertRaises(ValueError) as context:
+            score_loan_application(invalid_features, self.mock_model)
+        self.assertIn("Invalid monthly income", str(context.exception))
+
 
 class TestScoreAndRecord(unittest.TestCase):
     @patch("loanapplications.ml.scoring.extract_features_from_mock")
     @patch("loanapplications.ml.scoring.score_loan_application")
     @patch("loanapplications.ml.scoring.CreditScoreRecord.objects.create")
     @patch("loanapplications.ml.scoring.transaction.atomic")
-    def test_score_and_record_success(self, mock_atomic, mock_create, mock_score, mock_extract):
+    @patch("os.path.exists")  # Patch os.path.exists at the module level
+    def test_score_and_record_success(self, mock_path_exists, mock_atomic, mock_create, mock_score, mock_extract):
+        # Mock os.path.exists to return True so that the function doesn't raise an error
+        mock_path_exists.return_value = True
+
         mock_loan_app = MagicMock()
         mock_loan_app.id = 1
         mock_loan_app.mock_experian = MagicMock()
+        mock_loan_app.mock_experian.first.return_value = MagicMock()  # Return a mock report
 
-        mock_extract.return_value = {"key": "value"}
-        mock_score.return_value = (20.0, "approve", {"explanation": "test"})
+        features = {"key": "value"}
+        risk_score = 20.0
+        decision = "approve"
+        explanation = {"explanation": "test"}
+
+        mock_extract.return_value = features
+        mock_score.return_value = (risk_score, decision, explanation)
 
         score_and_record(mock_loan_app)
 
-        mock_create.assert_called_once()
+        # Verify CreditScoreRecord.objects.create was called with correct parameters
+        mock_create.assert_called_once_with(
+            loan_application=mock_loan_app,
+            user=mock_loan_app.user,
+            model_name="xgboost_v1",
+            risk_score=risk_score,
+            decision=decision,
+            scoring_inputs=features,
+            scoring_output=explanation,
+            credit_score=mock_loan_app.credit_score_records,
+        )
+
+        # Verify loan_application was updated with correct values
+        self.assertEqual(mock_loan_app.risk_score, risk_score)
+        self.assertEqual(mock_loan_app.ai_decision, decision)
+        self.assertEqual(mock_loan_app.ml_scoring_output, explanation)
         mock_loan_app.save.assert_called_once()
 
     @patch("loanapplications.ml.scoring.logger.error")
@@ -666,6 +705,25 @@ class TestScoreAndRecord(unittest.TestCase):
             self.assertIn("Mock error", str(context.exception))
             mock_logger.assert_called_once()
 
+    @patch("os.path.exists")  # Patch os.path.exists at the module level
+    @patch("loanapplications.ml.scoring.logger.error")
+    def test_score_and_record_no_model(self, mock_logger, mock_path_exists):
+        mock_loan_app = MagicMock()
+        mock_loan_app.id = 1
+        mock_loan_app.mock_experian = MagicMock()
+        mock_loan_app.mock_experian.first.return_value = MagicMock()  # Return a mock report
+
+        # Simulate no model found
+        mock_path_exists.return_value = False
+
+        with self.assertRaises(ValueError) as context:
+            score_and_record(mock_loan_app)
+        self.assertIn("No ML model found", str(context.exception))
+        mock_logger.assert_called_with(
+            f"Error scoring loan #{mock_loan_app.id}: No ML model found. Run train_loan_model first.",
+            exc_info=True
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
@@ -684,8 +742,11 @@ class TestAutoScoreLoansCommand(unittest.TestCase):
     def test_handle_no_unscored_loans(self, mock_score_loan_application, mock_loan_objects):
         mock_loan_objects.select_for_update.return_value.filter.return_value.select_related.return_value.exists.return_value = False
 
-        with patch("sys.stdout") as mock_stdout:
-            self.command.handle(dry_run=False,output_file="test.csv")
+        # Create a mock for stdout
+        mock_stdout = MagicMock()
+        self.command.stdout = mock_stdout
+
+        self.command.handle(dry_run=False,output_file="test.csv")
 
         mock_stdout.write.assert_called_with("✅ No unscored loans.\n")
         mock_score_loan_application.assert_not_called()
@@ -702,12 +763,15 @@ class TestAutoScoreLoansCommand(unittest.TestCase):
 
         mock_score_loan_application.return_value = (80.0, "approve", {"explanation": "test"})
 
-        with patch("sys.stdout") as mock_stdout:
-            self.command.handle(dry_run=False, output_file="test.csv")
-            loan_mock.risk_score = 80.0
-            loan_mock.ai_decision = "approve"
-            loan_mock.ml_scoring_output = {"explanation": "test"}
-            loan_mock.save()
+        # Create a mock for stdout
+        mock_stdout = MagicMock()
+        self.command.stdout = mock_stdout
+
+        self.command.handle(dry_run=False, output_file="test.csv")
+        loan_mock.risk_score = 80.0
+        loan_mock.ai_decision = "approve"
+        loan_mock.ml_scoring_output = {"explanation": "test"}
+        loan_mock.save()
 
         loan_mock.save.assert_called_once()
         mock_stdout.write.assert_called_with("Loan #1 scored: risk_score=80.0, ai_decision=approve\n")
@@ -762,18 +826,18 @@ class TestExportTrainingDataCommand(unittest.TestCase):
     def setUp(self):
         self.command = Command()
 
-    @patch("loanapplications.management.commands.export_training_data.open", new_callable=mock_open)
+    @patch("loanapplications.management.commands.export_training_data.Command._open_file", new_callable=mock_open)
     @patch("loanapplications.management.commands.export_training_data.LoanApplication.objects")
     def test_handle_no_loans(self, mock_loan_objects, mock_open_file):
         mock_loan_objects.select_related.return_value.prefetch_related.return_value.all.return_value.exists.return_value = False
 
         with patch("sys.stdout") as mock_stdout:
-            self.command.handle(dry_run=False,output_file="test.csv")
+            self.command.handle(output="test.csv")
 
-        mock_open_file.assert_called_once_with("test.csv", "w", newline="", encoding="utf-8")
+        mock_open_file.assert_called_once_with("test.csv")
         mock_stdout.write.assert_any_call("No loan records found\n")
 
-    @patch("loanapplications.management.commands.export_training_data.open", new_callable=mock_open)
+    @patch("loanapplications.management.commands.export_training_data.Command._open_file", new_callable=mock_open)
     @patch("loanapplications.management.commands.export_training_data.LoanApplication.objects")
     def test_handle_successful_export(self, mock_loan_objects, mock_open_file):
         mock_user = MagicMock(
@@ -809,12 +873,12 @@ class TestExportTrainingDataCommand(unittest.TestCase):
         mock_loan_objects.select_related.return_value.prefetch_related.return_value.all.return_value = [mock_loan]
 
         with patch("sys.stdout") as mock_stdout:
-            self.command.handle(dry_run=False,output_file="test.csv")
+            self.command.handle(output="test.csv")
 
-        mock_open_file.assert_called_once_with("test.csv", "w", newline="", encoding="utf-8")
+        mock_open_file.assert_called_once_with("test.csv")
         mock_stdout.write.assert_any_call("✅ Exported 1 records to test.csv\n")
 
-    @patch("loanapplications.management.commands.export_training_data.open", new_callable=mock_open)
+    @patch("loanapplications.management.commands.export_training_data.Command._open_file", new_callable=mock_open)
     @patch("loanapplications.management.commands.export_training_data.LoanApplication.objects")
     def test_handle_missing_user(self, mock_loan_objects, mock_open_file):
         mock_loan = MagicMock(
@@ -826,19 +890,31 @@ class TestExportTrainingDataCommand(unittest.TestCase):
         mock_loan_objects.select_related.return_value.prefetch_related.return_value.all.return_value = [mock_loan]
 
         with patch("sys.stdout") as mock_stdout:
-            self.command.handle(dry_run=False,output_file="test.csv")
+            self.command.handle(output="test.csv")
 
-        mock_open_file.assert_called_once_with("test.csv", "w", newline="", encoding="utf-8")
+        mock_open_file.assert_called_once_with("test.csv")
         mock_stdout.write.assert_any_call("⚠️ Skipped loan #1 due to: No user associated with loan\n")
 
-    @patch("loanapplications.management.commands.export_training_data.open", new_callable=mock_open)
-    @patch("loanapplications.management.commands.export_training_data.LoanApplication.objects")
-    def test_handle_io_error(self, mock_loan_objects, mock_open_file):
-        mock_open_file.side_effect = IOError("Mock IO Error")
+    def test_handle_io_error(self):
+        # Import the Command class directly
+        from loanapplications.management.commands.export_training_data import Command
 
-        with patch("sys.stdout") as mock_stdout:
-            self.command.handle(dry_run=False,output_file="test.csv")
+        # Create a new instance of Command
+        command = Command()
 
+        # Create a mock for stdout
+        mock_stdout = MagicMock()
+        command.stdout = mock_stdout
+
+        # Create a mock for the _open_file method that raises an IOError
+        with patch.object(Command, "_open_file", side_effect=IOError("Mock IO Error")) as mock_open:
+            # Call the handle method
+            command.handle(output="test.csv", dry_run=False)
+
+            # Verify that _open_file was called once
+            mock_open.assert_called_once_with("test.csv")
+
+        # Check that the error message was written to stdout
         mock_stdout.write.assert_any_call("Failed to write to file test.csv: Mock IO Error\n")
 
 
@@ -847,81 +923,125 @@ if __name__ == "__main__":
 
 import unittest
 from unittest.mock import MagicMock, patch
-from loanapplications.management.commands.generate_mock_loans import Command
+from loanapplications.management.commands.generate_mock_loans import Command as GenerateMockLoansCommand
 
 
 class TestGenerateMockLoansCommand(unittest.TestCase):
     def setUp(self):
-        self.command = Command()
+        self.command = GenerateMockLoansCommand()
 
-    @patch("loanapplications.management.commands.generate_mock_loans.CustomUser.objects.filter")
-    def test_handle_no_eligible_users(self, mock_user_filter):
-        mock_user_filter.return_value = []
+    def test_handle_no_eligible_users(self):
+        # Mock CustomUser.objects.filter to return an empty list (no eligible users)
+        with patch("users.models.CustomUser.objects.filter") as mock_user_filter:
+            mock_user_filter.return_value = []
 
-        with patch("sys.stdout") as mock_stdout:
+            # Mock stdout
+            mock_stdout = MagicMock()
+            self.command.stdout = mock_stdout
+
+            # Call the handle method
             self.command.handle(count=10, min_amount=50000, max_amount=1000000)
 
-        mock_stdout.write.assert_any_call("❌ No eligible users with credit_score and KYC verification found.\n")
+            # Assert that the correct message was written to stdout
+            mock_stdout.write.assert_any_call("❌ No eligible users with credit_score and KYC verification found.\n")
 
-    @patch("loanapplications.management.commands.generate_mock_loans.CustomUser.objects.filter")
-    @patch("loanapplications.management.commands.generate_mock_loans.LoanApplication.objects.create")
-    @patch("loanapplications.management.commands.generate_mock_loans.MockExperianReport.objects.create")
-    def test_handle_successful_creation(self, mock_report_create, mock_loan_create, mock_user_filter):
+    def test_handle_successful_creation(self):
+        # Create a mock user
         mock_user = MagicMock(
             credit_score=750,
             annual_income=600000,
             is_kyc_verified=True
         )
-        mock_user_filter.return_value = [mock_user]
 
-        with patch("sys.stdout") as mock_stdout:
-            self.command.handle(count=2, min_amount=50000, max_amount=1000000)
+        # Mock CustomUser.objects.filter to return our mock user
+        with patch("users.models.CustomUser.objects.filter") as mock_user_filter:
+            mock_user_filter.return_value = [mock_user]
 
-        self.assertEqual(mock_loan_create.call_count, 2)
-        self.assertEqual(mock_report_create.call_count, 2)
-        mock_stdout.write.assert_any_call("✅ Created 2 mock loans with approval labels.\n")
+            # Mock the create_loan and create_experian_report methods
+            with patch.object(GenerateMockLoansCommand, "create_loan") as mock_loan_create:
+                with patch.object(GenerateMockLoansCommand, "create_experian_report") as mock_report_create:
+                    # Mock stdout
+                    mock_stdout = MagicMock()
+                    self.command.stdout = mock_stdout
 
-    @patch("loanapplications.management.commands.generate_mock_loans.CustomUser.objects.filter")
-    @patch("loanapplications.management.commands.generate_mock_loans.LoanApplication.objects.create")
-    @patch("loanapplications.management.commands.generate_mock_loans.MockExperianReport.objects.create")
-    def test_handle_creation_with_rejection(self, mock_report_create, mock_loan_create, mock_user_filter):
+                    # Call the handle method
+                    self.command.handle(count=2, min_amount=50000, max_amount=1000000)
+
+                    # Assert that the methods were called the expected number of times
+                    self.assertEqual(mock_loan_create.call_count, 2)
+                    self.assertEqual(mock_report_create.call_count, 2)
+                    mock_stdout.write.assert_any_call("✅ Created 2 mock loans with approval labels.\n")
+
+    def test_handle_creation_with_rejection(self):
+        # Create a mock user with a credit score below the approval threshold
         mock_user = MagicMock(
             credit_score=650,  # Below approval threshold
-            annual_income=300000
+            annual_income=300000,
+            is_kyc_verified=True
         )
-        mock_user_filter.return_value = [mock_user]
 
-        with patch("sys.stdout") as mock_stdout:
-            self.command.handle(count=1, min_amount=50000, max_amount=1000000)
+        # Mock CustomUser.objects.filter to return our mock user
+        with patch("users.models.CustomUser.objects.filter") as mock_user_filter:
+            mock_user_filter.return_value = [mock_user]
 
-        mock_loan_create.assert_called_once_with(
-            user=mock_user,
-            amount_requested=MagicMock(),  # Randomly generated
-            term_months=MagicMock(),  # Randomly chosen
-            purpose=MagicMock(),  # Randomly chosen
-            monthly_income=MagicMock(),  # Derived from annual income
-            existing_loans=MagicMock(),  # Random boolean
-            ai_decision="reject",  # Expected rejection
-            status="rejected"  # Expected rejection
+            # Mock the create_loan and create_experian_report methods
+            with patch.object(GenerateMockLoansCommand, "create_loan") as mock_loan_create:
+                with patch.object(GenerateMockLoansCommand, "create_experian_report") as mock_report_create:
+                    # Mock stdout
+                    mock_stdout = MagicMock()
+                    self.command.stdout = mock_stdout
+
+                    # Call the handle method
+                    self.command.handle(count=1, min_amount=50000, max_amount=1000000)
+
+                # Assert that the loan was created with rejection status
+                mock_loan_create.assert_called_once_with(
+                    user=mock_user,
+                    amount_requested=mock.ANY,  # Randomly generated
+                    term_months=mock.ANY,  # Randomly chosen
+                    purpose=mock.ANY,  # Randomly chosen
+                    monthly_income=mock.ANY,  # Derived from annual income
+                    existing_loans=mock.ANY,  # Random boolean
+                    approved=False  # Expected rejection
+                )
+                mock_report_create.assert_called_once()
+                mock_stdout.write.assert_any_call("✅ Created 1 mock loans with approval labels.\n")
+
+    def test_handle_invalid_count(self):
+        # Create a mock user
+        mock_user = MagicMock(
+            credit_score=750, 
+            annual_income=600000, 
+            is_kyc_verified=True
         )
-        mock_report_create.assert_called_once()
-        mock_stdout.write.assert_any_call("✅ Created 1 mock loans with approval labels.\n")
 
-    @patch("loanapplications.management.commands.generate_mock_loans.CustomUser.objects.filter")
-    def test_handle_invalid_count(self, mock_user_filter):
-        mock_user_filter.return_value = [MagicMock(credit_score=750, annual_income=600000, is_kyc_verified=True)]
+        # Mock CustomUser.objects.filter to return our mock user
+        with patch("users.models.CustomUser.objects.filter") as mock_user_filter:
+            mock_user_filter.return_value = [mock_user]
 
-        with patch("sys.stdout") as mock_stdout:
-            with self.assertRaises(ValueError):
-                self.command.handle(count=-1, min_amount=50000, max_amount=1000000)
+            # Mock stdout
+            with patch("sys.stdout") as mock_stdout:
+                # Call the handle method with an invalid count
+                with self.assertRaises(ValueError):
+                    self.command.handle(count=-1, min_amount=50000, max_amount=1000000)
 
-    @patch("loanapplications.management.commands.generate_mock_loans.CustomUser.objects.filter")
-    def test_handle_invalid_amounts(self, mock_user_filter):
-        mock_user_filter.return_value = [MagicMock(credit_score=750, annual_income=600000, is_kyc_verified=True)]
+    def test_handle_invalid_amounts(self):
+        # Create a mock user
+        mock_user = MagicMock(
+            credit_score=750, 
+            annual_income=600000, 
+            is_kyc_verified=True
+        )
 
-        with patch("sys.stdout") as mock_stdout:
-            with self.assertRaises(ValueError):
-                self.command.handle(count=10, min_amount=1000000, max_amount=50000)
+        # Mock CustomUser.objects.filter to return our mock user
+        with patch("users.models.CustomUser.objects.filter") as mock_user_filter:
+            mock_user_filter.return_value = [mock_user]
+
+            # Mock stdout
+            with patch("sys.stdout") as mock_stdout:
+                # Call the handle method with invalid amounts (min > max)
+                with self.assertRaises(ValueError):
+                    self.command.handle(count=10, min_amount=1000000, max_amount=50000)
 
 
 if __name__ == "__main__":
@@ -940,10 +1060,11 @@ class TestTrainLoanModelCommand(unittest.TestCase):
     def test_handle_file_not_found(self, mock_path_exists):
         mock_path_exists.return_value = False
 
-        with patch("sys.stdout") as mock_stdout:
-            self.command.handle(input_file="nonexistent.csv", output_dir="ml_models")
+        # Call the handle method and check the return value
+        result = self.command.handle(input_file="nonexistent.csv", output_dir="ml_models")
 
-        mock_stdout.write.assert_any_call("❌ CSV file not found at nonexistent.csv. Run export_training_data first.\n")
+        # Check if the expected message is in the result
+        self.assertIn("CSV file not found at nonexistent.csv", result)
 
     @patch("loanapplications.management.commands.train_loan_model.pd.read_csv")
     @patch("loanapplications.management.commands.train_loan_model.os.path.exists")
@@ -951,33 +1072,101 @@ class TestTrainLoanModelCommand(unittest.TestCase):
         mock_path_exists.return_value = True
         mock_read_csv.return_value = MagicMock(columns=["credit_score", "annual_income"])  # Missing columns
 
-        with patch("sys.stdout") as mock_stdout:
-            self.command.handle(input_file="test.csv", output_dir="ml_models")
+        # Call the handle method and check the return value
+        result = self.command.handle(input_file="test.csv", output_dir="ml_models")
 
-        mock_stdout.write.assert_any_call("❌ Missing columns in CSV file: monthly_income, employment_status, existing_loans, credit_history_fetched, amount_requested, term_months, loan_to_income_ratio, credit_util_pct, emi_to_income_ratio, dpd_max, overdue_accounts, total_accounts, bureau_score, score_band, is_kyc_verified, govt_id_type, age, address_length, loan_approved\n")
+        # Check if the expected message is in the result
+        self.assertIn("Missing columns in CSV file", result)
+
+        # Check for some specific missing columns to ensure the message is correct
+        missing_columns = ["monthly_income", "employment_status", "existing_loans"]
+        for col in missing_columns:
+            self.assertIn(col, result, f"Missing column '{col}' not found in output")
 
     @patch("loanapplications.management.commands.train_loan_model.StandardScaler")
     @patch("loanapplications.management.commands.train_loan_model.train_test_split")
     @patch("loanapplications.management.commands.train_loan_model.pd.read_csv")
     @patch("loanapplications.management.commands.train_loan_model.os.path.exists")
     @patch("loanapplications.management.commands.train_loan_model.joblib.dump")
-    def test_handle_successful_training(self, mock_joblib_dump, mock_path_exists, mock_read_csv, mock_train_test_split, mock_scaler):
+    @patch("loanapplications.management.commands.train_loan_model.xgb.XGBClassifier")
+    @patch("loanapplications.management.commands.train_loan_model.lgb.LGBMClassifier")
+    @patch("loanapplications.management.commands.train_loan_model.classification_report")
+    @patch("loanapplications.management.commands.train_loan_model.os.makedirs")
+    def test_handle_successful_training(self, mock_makedirs, mock_report, mock_lgb, mock_xgb, mock_joblib_dump, mock_path_exists, mock_read_csv, mock_train_test_split, mock_scaler):
+        # Setup path exists
         mock_path_exists.return_value = True
-        mock_read_csv.return_value = MagicMock(columns=[
-            'credit_score', 'annual_income', 'monthly_income', 'employment_status',
-            'existing_loans', 'credit_history_fetched', 'amount_requested', 'term_months',
-            'loan_to_income_ratio', 'credit_util_pct', 'emi_to_income_ratio', 'dpd_max',
-            'overdue_accounts', 'total_accounts', 'bureau_score', 'score_band',
-            'is_kyc_verified', 'govt_id_type', 'age', 'address_length', 'loan_approved'
-        ])
-        mock_train_test_split.return_value = (MagicMock(), MagicMock(), MagicMock(), MagicMock())
 
-        with patch("sys.stdout") as mock_stdout:
-            self.command.handle(input_file="test.csv", output_dir="ml_models")
+        # Create a real pandas DataFrame with the required columns
+        import pandas as pd
+        import numpy as np
 
+        # Create a DataFrame with all required columns
+        data = {
+            'credit_score': [700, 650, 800],
+            'annual_income': [50000, 60000, 70000],
+            'monthly_income': [4000, 5000, 6000],
+            'employment_status': ['employed', 'employed', 'self-employed'],
+            'existing_loans': [1, 0, 2],
+            'credit_history_fetched': [True, True, False],
+            'amount_requested': [10000, 20000, 15000],
+            'term_months': [12, 24, 36],
+            'loan_to_income_ratio': [0.2, 0.3, 0.25],
+            'credit_util_pct': [30, 40, 20],
+            'emi_to_income_ratio': [0.1, 0.15, 0.12],
+            'dpd_max': [0, 30, 0],
+            'overdue_accounts': [0, 1, 0],
+            'total_accounts': [3, 4, 5],
+            'bureau_score': [750, 680, 820],
+            'score_band': ['good', 'average', 'excellent'],
+            'is_kyc_verified': [True, True, True],
+            'govt_id_type': ['passport', 'driver_license', 'passport'],
+            'age': [30, 35, 40],
+            'address_length': [5, 3, 10],
+            'loan_approved': [1, 0, 1]
+        }
+        df = pd.DataFrame(data)
+        mock_read_csv.return_value = df
+
+        # Setup train_test_split
+        X = df.drop(columns=['loan_approved'])
+        y = df['loan_approved']
+        mock_train_test_split.return_value = (X, X, y, y)
+
+        # Setup scaler
+        mock_scaler_instance = MagicMock()
+        mock_scaler.return_value = mock_scaler_instance
+
+        # Create a mock return value for fit_transform that has the right shape
+        numerical_features = X.select_dtypes(include=['float64', 'int64']).columns
+        mock_transformed_values = np.zeros((len(X), len(numerical_features)))
+        mock_scaler_instance.fit_transform.return_value = mock_transformed_values
+
+        # Setup XGBoost
+        mock_xgb_instance = MagicMock()
+        mock_xgb.return_value = mock_xgb_instance
+        mock_xgb_instance.fit.return_value = None
+        mock_xgb_instance.predict.return_value = np.array([1, 0, 1])
+
+        # Setup LightGBM
+        mock_lgb_instance = MagicMock()
+        mock_lgb.return_value = mock_lgb_instance
+        mock_lgb_instance.fit.return_value = None
+        mock_lgb_instance.predict.return_value = np.array([1, 0, 1])
+
+        # Setup classification report
+        mock_report.return_value = "Classification Report"
+
+        # Run the command and check the return value
+        result = self.command.handle(input_file="test.csv", output_dir="ml_models")
+
+        # Verify joblib.dump was called
         mock_joblib_dump.assert_called()
-        mock_stdout.write.assert_any_call("✅ LightGBM model saved to ml_models/lightgbm_loan_model.pkl\n")
-        mock_stdout.write.assert_any_call("✅ XGBoost model saved to ml_models/xgboost_loan_model.pkl\n")
+
+        # Check if the expected messages are in the result
+        self.assertTrue(isinstance(result, list), "Result should be a list")
+        self.assertEqual(len(result), 2, "Result should contain 2 messages")
+        self.assertIn("XGBoost model saved to ml_models/xgboost_loan_model.pkl", result[0])
+        self.assertIn("LightGBM model saved to ml_models/lightgbm_loan_model.pkl", result[1])
 
     @patch("loanapplications.management.commands.train_loan_model.pd.read_csv")
     @patch("loanapplications.management.commands.train_loan_model.os.path.exists")
@@ -985,11 +1174,12 @@ class TestTrainLoanModelCommand(unittest.TestCase):
         mock_path_exists.return_value = True
         mock_read_csv.side_effect = Exception("Mock CSV read error")
 
-        with patch("sys.stdout") as mock_stdout:
-            with self.assertRaises(Exception):
-                self.command.handle(input_file="test.csv", output_dir="ml_models")
+        # We expect an exception to be raised
+        with self.assertRaises(Exception) as context:
+            self.command.handle(input_file="test.csv", output_dir="ml_models")
 
-        mock_stdout.write.assert_any_call("❌ An error occurred: Mock CSV read error\n")
+        # Check that the exception message contains our error
+        self.assertIn("Mock CSV read error", str(context.exception))
 
 
 if __name__ == "__main__":

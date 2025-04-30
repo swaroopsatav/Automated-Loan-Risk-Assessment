@@ -12,21 +12,41 @@ logger = logging.getLogger(__name__)
 def score_and_record(loan_application) -> None:
     """
     Score a loan application and record the results.
-    
+
     Args:
         loan_application: The loan application object to score
-        
+
     Raises:
         ValueError: If mock report is missing or scoring fails
     """
     try:
-        mock_report = loan_application.mock_experian
-        if not mock_report:
-            logger.error(f"Missing mock_experian report for loan #{loan_application.id}")
+        # Get the mock_experian report
+        try:
+            mock_report = loan_application.mock_experian.first()
+            if not mock_report:
+                logger.error(f"Missing mock_experian report for loan #{loan_application.id}")
+                raise ValueError("No mock_experian report found for loan application.")
+        except Exception:
+            logger.error(f"Error accessing mock_experian for loan #{loan_application.id}")
             raise ValueError("No mock_experian report found for loan application.")
 
         features = extract_features_from_mock(mock_report)
-        risk_score, decision, explanation = score_loan_application(features)
+
+        # Import the model for scoring
+        import joblib
+        import os
+
+        # Load the model
+        model_path = os.path.join('ml_models', 'xgboost_loan_model.pkl')
+        if not os.path.exists(model_path):
+            model_path = os.path.join('ml_models', 'lightgbm_loan_model.pkl')
+
+        if not os.path.exists(model_path):
+            raise ValueError("No ML model found. Run train_loan_model first.")
+
+        MODEL = joblib.load(model_path)
+
+        risk_score, decision, explanation = score_loan_application(features, MODEL=MODEL)
 
         with transaction.atomic():
             # Create credit score record
@@ -38,7 +58,7 @@ def score_and_record(loan_application) -> None:
                 decision=decision,
                 scoring_inputs=features,
                 scoring_output=explanation,
-                credit_score=loan_application.credit_score,
+                credit_score=loan_application.credit_score_records,
             )
 
             # Update loan application
@@ -57,14 +77,14 @@ def score_and_record(loan_application) -> None:
 def score_loan_application(features: Dict[str, Any], MODEL=None) -> Tuple[float, str, Dict[str, Any]]:
     """
     Score a loan application based on features.
-    
+
     Args:
         features: Dictionary of loan features
         MODEL: ML model to use for prediction (optional)
-        
+
     Returns:
         Tuple of (risk_score, decision, explanation)
-        
+
     Raises:
         ValueError: If required features are missing or MODEL is None
     """

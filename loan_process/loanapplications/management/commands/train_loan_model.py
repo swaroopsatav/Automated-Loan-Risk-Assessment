@@ -45,7 +45,7 @@ class Command(BaseCommand):
             msg = f"❌ CSV file not found at {file_path}. Run export_training_data first.\n"
             self.stdout.write(msg)
             logger.error(msg)
-            return
+            return msg
 
         try:
             # Load and validate the dataset
@@ -61,7 +61,7 @@ class Command(BaseCommand):
                 msg = f"❌ Missing columns in CSV file: {', '.join(missing_cols)}\n"
                 self.stdout.write(msg)
                 logger.error(msg)
-                return
+                return msg
 
             # Handle missing values
             df = df.fillna(df.mean(numeric_only=True))
@@ -76,15 +76,27 @@ class Command(BaseCommand):
             # Standardize numerical features
             numerical_features = X.select_dtypes(include=['float64', 'int64']).columns
             scaler = StandardScaler()
-            X[numerical_features] = scaler.fit_transform(X[numerical_features])
+
+            # Handle the transformation in a way that's easier to mock in tests
+            transformed_values = scaler.fit_transform(X[numerical_features])
+            for i, col in enumerate(numerical_features):
+                X[col] = transformed_values[:, i]
 
             # Save scaler for future predictions
             os.makedirs(output_dir, exist_ok=True)
             joblib.dump(scaler, os.path.join(output_dir, "feature_scaler.pkl"))
 
-            X_train, X_test, y_train, y_test = train_test_split(
-                X, y, test_size=0.2, stratify=y, random_state=42
-            )
+            # Ensure we have enough samples for stratification
+            if len(y) < 10 or len(y.unique()) < 2 or y.value_counts().min() < 2:
+                # If not enough samples, use a simple split without stratification
+                X_train, X_test, y_train, y_test = train_test_split(
+                    X, y, test_size=0.2, random_state=42
+                )
+            else:
+                # Use stratified split if we have enough samples
+                X_train, X_test, y_train, y_test = train_test_split(
+                    X, y, test_size=0.2, stratify=y, random_state=42
+                )
 
             # Train XGBoost with better parameters 
             self.stdout.write("🚀 Training XGBoost model...")
@@ -102,11 +114,11 @@ class Command(BaseCommand):
                 random_state=42
             )
 
+            # XGBoost fit without early_stopping_rounds
             xgb_model.fit(
                 X_train,
                 y_train,
                 eval_set=[(X_test, y_test)],
-                early_stopping_rounds=10,
                 verbose=False
             )
 
@@ -136,8 +148,7 @@ class Command(BaseCommand):
                 X_train,
                 y_train,
                 eval_set=[(X_test, y_test)],
-                early_stopping_rounds=10,
-                verbose=False
+                callbacks=[lgb.early_stopping(stopping_rounds=10)]
             )
 
             lgb_preds = lgb_model.predict(X_test)
@@ -151,8 +162,15 @@ class Command(BaseCommand):
             # Save feature names for future reference
             joblib.dump(list(X.columns), os.path.join(output_dir, "feature_names.pkl"))
 
+            # Return success messages for testing
+            return [
+                f"✅ XGBoost model saved to {output_dir}/xgboost_loan_model.pkl\n",
+                f"✅ LightGBM model saved to {output_dir}/lightgbm_loan_model.pkl\n"
+            ]
+
         except Exception as e:
             msg = f"❌ An error occurred: {str(e)}\n"
             self.stdout.write(msg)
             logger.error(msg, exc_info=True)
+            # Re-raise the exception to allow tests to catch it
             raise

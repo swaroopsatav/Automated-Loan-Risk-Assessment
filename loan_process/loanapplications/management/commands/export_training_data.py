@@ -17,12 +17,31 @@ class Command(BaseCommand):
             default='loan_training_data.csv',
             help='Output file path for the CSV data (default: loan_training_data.csv)'
         )
+        parser.add_argument(
+            '--dry-run',
+            action='store_true',
+            help='Run without writing to file'
+        )
+
+    def _open_file(self, output_file):
+        """Open the output file and return a file object."""
+        return open(output_file, "w", newline="", encoding='utf-8')
 
     def handle(self, *args, **options):
         output_file = options['output']
+        # Print all options for debugging
+        self.stdout.write(f"Options: {options}\n")
+        # Check for both 'dry_run' and 'dry-run' in options
+        dry_run = options.get('dry_run', options.get('dry-run', False))
+        self.stdout.write(f"dry_run: {dry_run}\n")
+
+        # Skip file operations if dry_run is True
+        if dry_run:
+            self.stdout.write(f"Dry run mode - not writing to {output_file}\n")
+            return
 
         try:
-            with open(output_file, "w", newline="", encoding='utf-8') as f:
+            with self._open_file(output_file) as f:
                 writer = csv.writer(f)
 
                 # Write the CSV header
@@ -39,9 +58,7 @@ class Command(BaseCommand):
                 count = 0
 
                 # Optimize query with select_related and prefetch_related
-                loans = LoanApplication.objects.select_related('user').prefetch_related(
-                    Prefetch('mock_experian')
-                ).all()
+                loans = LoanApplication.objects.select_related('user').prefetch_related('mock_experian').all()
 
                 if not loans.exists():
                     self.stdout.write("No loan records found\n")
@@ -53,7 +70,7 @@ class Command(BaseCommand):
                         if not user:
                             raise ValueError("No user associated with loan")
 
-                        report = loan.mock_experian
+                        report = loan.mock_experian.first()
                         if not report:
                             raise ValueError("No credit report found")
 

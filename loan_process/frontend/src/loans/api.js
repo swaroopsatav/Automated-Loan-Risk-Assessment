@@ -1,8 +1,11 @@
 import axios from 'axios';
+import { API_CONFIG, AUTH_CONFIG } from '../config';
 
 // Create an axios instance with a base URL for loan-related API calls
 const loanAPI = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: API_CONFIG.baseURL,
+  headers: API_CONFIG.headers,
+  timeout: API_CONFIG.timeout,
 });
 
 // Add a request interceptor to include authentication token
@@ -15,7 +18,7 @@ loanAPI.interceptors.request.use(
       if (expiry && Date.now() > parseInt(expiry)) {
         console.warn('Token expired');
         // Handle token expiration (e.g., redirect to login or refresh token)
-        window.location.href = '/login';
+        window.location.href = AUTH_CONFIG.loginRedirectUrl;
       } else {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -39,7 +42,7 @@ loanAPI.interceptors.response.use(
       if (error.response.status === 401) {
         console.error('Unauthorized request. Redirecting to login...');
         // You could display a message to the user here before redirecting
-        window.location.href = '/login';
+        window.location.href = AUTH_CONFIG.loginRedirectUrl;
       } else if (error.response.status === 500) {
         console.error('Server error. Please try again later.');
         // Optionally, show a notification or alert to the user

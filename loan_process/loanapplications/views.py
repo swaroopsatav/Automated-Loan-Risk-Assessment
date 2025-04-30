@@ -25,23 +25,61 @@ class LoanApplicationCreateView(generics.CreateAPIView):
     serializer_class = LoanApplicationSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        loan = serializer.save(user=self.request.user)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                loan = serializer.save(user=self.request.user)
+                self.process_loan(loan)
+                headers = self.get_success_headers(serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            except Exception as e:
+                logger.error(f"Error processing loan application: {str(e)}")
+                return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def process_loan(self, loan):
         try:
             # Record credit score
             score_and_record(loan)
 
             # Run ML scoring
+            # Import the model for scoring
+            import joblib
+            import os
+
+            # Load the model
+            model_path = os.path.join('ml_models', 'xgboost_loan_model.pkl')
+            if not os.path.exists(model_path):
+                model_path = os.path.join('ml_models', 'lightgbm_loan_model.pkl')
+
+            if not os.path.exists(model_path):
+                raise ValueError("No ML model found. Run train_loan_model first.")
+
+            MODEL = joblib.load(model_path)
+
             data = {
                 'amount_requested': float(loan.amount_requested),
                 'term_months': loan.term_months,
                 'monthly_income': float(loan.monthly_income or 0),
                 'existing_loans': int(loan.existing_loans),
-                'credit_score': float(loan.credit_score_records or 0)
+                'credit_score': float(loan.credit_score_records or 0),
+                'credit_util_pct': 50.0,  # Default value
+                'dpd_max': 0,  # Default value
+                'emi_to_income_ratio': 0.3  # Default value
             }
 
-            risk_score, ai_decision, explanation = score_loan_application(data)
+            # Try to get credit report data if available
+            try:
+                report = loan.mock_experian.first()
+                if report:
+                    data['credit_util_pct'] = float(report.credit_utilization_pct or 50.0)
+                    data['dpd_max'] = int(report.dpd_max or 0)
+                    data['emi_to_income_ratio'] = float(report.emi_to_income_ratio or 0.3)
+            except Exception:
+                pass
+
+            risk_score, ai_decision, explanation = score_loan_application(data, MODEL=MODEL)
 
             loan.risk_score = risk_score
             loan.ai_decision = ai_decision
@@ -96,19 +134,28 @@ class LoanDocumentUploadView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                # Verify loan belongs to user
+                loan = LoanApplication.objects.get(
+                    id=serializer.validated_data['loan'].id,
+                    user=self.request.user
+                )
+                self.perform_create(serializer)
+                headers = self.get_success_headers(serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            except LoanApplication.DoesNotExist:
+                return Response({"detail": "Not authorized to upload documents for this loan"}, 
+                               status=status.HTTP_403_FORBIDDEN)
+            except Exception as e:
+                logger.error(f"Error uploading loan document: {str(e)}")
+                return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def perform_create(self, serializer):
-        try:
-            # Verify loan belongs to user
-            loan = LoanApplication.objects.get(
-                id=serializer.validated_data['loan'].id,
-                user=self.request.user
-            )
-            serializer.save()
-        except LoanApplication.DoesNotExist:
-            raise permissions.PermissionDenied("Not authorized to upload documents for this loan")
-        except Exception as e:
-            logger.error(f"Error uploading loan document: {str(e)}")
-            raise
+        serializer.save()
 
 
 # --- Admin: View All Applications ---

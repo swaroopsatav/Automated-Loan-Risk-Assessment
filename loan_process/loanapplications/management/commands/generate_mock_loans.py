@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from faker import Faker
 import random
 from decimal import Decimal, ROUND_HALF_UP
+import sys
 
 from users.models import CustomUser
 from loanapplications.models import LoanApplication
@@ -18,15 +19,74 @@ class Command(BaseCommand):
         parser.add_argument("--min-amount", type=int, default=50000, help="Minimum loan amount")
         parser.add_argument("--max-amount", type=int, default=1000000, help="Maximum loan amount")
 
+    def create_loan(self, user, amount_requested, term_months, purpose, monthly_income, existing_loans, approved):
+        from loanapplications.models import LoanApplication
+        return LoanApplication.objects.create(
+            user=user,
+            amount_requested=amount_requested,
+            term_months=term_months,
+            purpose=purpose,
+            monthly_income=monthly_income,
+            existing_loans=existing_loans,
+            ai_decision="approve" if approved else "reject",
+            status="approved" if approved else "rejected"
+        )
+
+    def create_experian_report(self, user, loan, credit_score, dpd, credit_util, emi_ratio, total_accounts, active_accounts, overdue_accounts):
+        from integrations.models import MockExperianReport
+        amount_requested = loan.amount_requested
+        return MockExperianReport.objects.create(
+            user=user,
+            loan_application=loan,
+            bureau_score=credit_score,
+            score_band="high" if credit_score >= 750 else "medium" if credit_score >= 650 else "low",
+            report_status="mocked",
+            total_accounts=total_accounts,
+            active_accounts=active_accounts,
+            overdue_accounts=overdue_accounts,
+            dpd_max=dpd,
+            credit_utilization_pct=credit_util,
+            emi_to_income_ratio=float(emi_ratio),
+            tradelines=[
+                {"account_type": "credit_card", "dpd": dpd},
+                {"account_type": "personal_loan", "dpd": 0}
+            ],
+            enquiries=[
+                {"type": "loan", "amount": float(amount_requested * Decimal('0.1'))}
+            ],
+            mock_raw_report={
+                "bureau_score": credit_score,
+                "assessment_date": faker.date_this_year().isoformat(),
+                "report_number": faker.uuid4()
+            }
+        )
+
     def handle(self, *args, **options):
+        # For testing purposes, allow dependency injection
+        from loanapplications.models import LoanApplication
+        from integrations.models import MockExperianReport
+
         count = options["count"]
         min_amount = options["min_amount"]
         max_amount = options["max_amount"]
 
+        # Validate parameters
+        if count <= 0:
+            raise ValueError("Count must be greater than zero")
+
+        if min_amount <= 0:
+            raise ValueError("Minimum amount must be greater than zero")
+
+        if max_amount <= 0:
+            raise ValueError("Maximum amount must be greater than zero")
+
+        if min_amount >= max_amount:
+            raise ValueError("Minimum amount must be less than maximum amount")
+
         users = list(CustomUser.objects.filter(is_kyc_verified=True, credit_score__isnull=False))
 
         if not users:
-            self.stdout.write(self.style.ERROR("❌ No eligible users with credit_score and KYC verification found."))
+            self.stdout.write("❌ No eligible users with credit_score and KYC verification found.\n")
             return
 
         created = 0
@@ -67,15 +127,14 @@ class Command(BaseCommand):
             ])
 
             # Create LoanApplication instance
-            loan = LoanApplication.objects.create(
+            loan = self.create_loan(
                 user=user,
                 amount_requested=amount_requested,
                 term_months=term_months,
                 purpose=purpose,
                 monthly_income=monthly_income,
                 existing_loans=existing_loans,
-                ai_decision="approve" if approved else "reject",
-                status="approved" if approved else "rejected"
+                approved=approved
             )
 
             # Create MockExperianReport with more realistic data
@@ -83,30 +142,16 @@ class Command(BaseCommand):
             active_accounts = random.randint(1, min(total_accounts, 10))
             overdue_accounts = random.randint(0, min(3, active_accounts)) if dpd > 0 else 0
 
-            MockExperianReport.objects.create(
+            self.create_experian_report(
                 user=user,
-                loan_application=loan,
-                bureau_score=user.credit_score,
-                score_band="high" if user.credit_score >= 750 else "medium" if user.credit_score >= 650 else "low",
-                report_status="mocked",
+                loan=loan,
+                credit_score=user.credit_score,
+                dpd=dpd,
+                credit_util=credit_util,
+                emi_ratio=emi_ratio,
                 total_accounts=total_accounts,
                 active_accounts=active_accounts,
-                overdue_accounts=overdue_accounts,
-                dpd_max=dpd,
-                credit_utilization_pct=credit_util,
-                emi_to_income_ratio=float(emi_ratio),
-                tradelines=[
-                    {"account_type": "credit_card", "dpd": dpd},
-                    {"account_type": "personal_loan", "dpd": 0}
-                ],
-                enquiries=[
-                    {"type": "loan", "amount": float(amount_requested * Decimal('0.1'))}
-                ],
-                mock_raw_report={
-                    "bureau_score": user.credit_score,
-                    "assessment_date": faker.date_this_year().isoformat(),
-                    "report_number": faker.uuid4()
-                }
+                overdue_accounts=overdue_accounts
             )
 
             created += 1
@@ -114,4 +159,4 @@ class Command(BaseCommand):
             if created % 100 == 0:
                 self.stdout.write(f"Created {created} mock loans...")
 
-        self.stdout.write(self.style.SUCCESS(f"✅ Created {created} mock loans with approval labels."))
+        self.stdout.write(f"✅ Created {created} mock loans with approval labels.\n")

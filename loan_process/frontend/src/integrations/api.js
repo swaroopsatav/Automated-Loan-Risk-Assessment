@@ -1,6 +1,11 @@
 import axios from 'axios';
+import { API_CONFIG, AUTH_CONFIG } from '../config';
 
-const integrationsAPI = axios.create({ baseURL: 'http://localhost:8000/' });
+const integrationsAPI = axios.create({
+  baseURL: API_CONFIG.baseURL,
+  headers: API_CONFIG.headers,
+  timeout: API_CONFIG.timeout,
+});
 
 // Add a request interceptor to include the Authorization header if the token exists
 integrationsAPI.interceptors.request.use(
@@ -27,11 +32,11 @@ integrationsAPI.interceptors.response.use(
 
     // Check if the error is due to an expired or invalid token
     if (error.response && error.response.status === 401) {
-      // Optionally, handle token expiration (e.g., logout the user, refresh the token, etc.)
+      // Handle token expiration (logout the user and redirect to login)
       console.warn('Unauthorized. Token might be expired or invalid.');
-      // You can add logic to clear the token and redirect to login, e.g.:
-      // localStorage.removeItem('access');
-      // window.location.href = '/login';
+      localStorage.removeItem('access');
+      localStorage.removeItem('refresh');
+      window.location.href = AUTH_CONFIG.loginRedirectUrl;
     }
 
     // Pass the error to the caller
