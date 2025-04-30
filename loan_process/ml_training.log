@@ -4403,3 +4403,181 @@ Classification Report
 2025-04-30 16:03:50,934 - INFO - Training LightGBM model...
 2025-04-30 16:03:50,934 - INFO - LightGBM training complete. Report:
 Classification Report
+2025-04-30 18:26:02,062 - INFO - Training XGBoost model...
+2025-04-30 18:26:02,181 - INFO - XGBoost training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:02,181 - INFO - Training LightGBM model...
+2025-04-30 18:26:02,202 - INFO - LightGBM training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:02,224 - INFO - Training XGBoost model...
+2025-04-30 18:26:02,378 - INFO - XGBoost training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:02,379 - INFO - Training LightGBM model...
+2025-04-30 18:26:02,397 - INFO - LightGBM training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:02,418 - INFO - Training XGBoost model...
+2025-04-30 18:26:02,524 - INFO - XGBoost training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:02,524 - INFO - Training LightGBM model...
+2025-04-30 18:26:02,541 - INFO - LightGBM training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:02,564 - INFO - Training XGBoost model...
+2025-04-30 18:26:02,910 - INFO - XGBoost training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:02,910 - INFO - Training LightGBM model...
+2025-04-30 18:26:02,933 - INFO - LightGBM training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:02,965 - INFO - Training XGBoost model...
+2025-04-30 18:26:03,206 - INFO - XGBoost training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:03,206 - INFO - Training LightGBM model...
+2025-04-30 18:26:03,227 - INFO - LightGBM training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:03,246 - INFO - Training XGBoost model...
+2025-04-30 18:26:03,337 - INFO - XGBoost training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:03,337 - INFO - Training LightGBM model...
+2025-04-30 18:26:03,356 - INFO - LightGBM training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:03,376 - INFO - Training XGBoost model...
+2025-04-30 18:26:03,545 - INFO - XGBoost training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:03,545 - INFO - Training LightGBM model...
+2025-04-30 18:26:03,564 - INFO - LightGBM training complete. Report:
+              precision    recall  f1-score   support
+
+           0       0.67      1.00      0.80         2
+           1       0.00      0.00      0.00         1
+
+    accuracy                           0.67         3
+   macro avg       0.33      0.50      0.40         3
+weighted avg       0.44      0.67      0.53         3
+
+2025-04-30 18:26:03,591 - ERROR - ❌ An error occurred: Mock CSV read error
+Traceback (most recent call last):
+  File "/home/aspl-81/PycharmProjects/Python-Project/loan_process/loanapplications/management/commands/train_loan_model.py", line 52, in handle
+    df = pd.read_csv(file_path)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+Exception: Mock CSV read error
+2025-04-30 18:26:03,592 - ERROR - ❌ CSV file not found at nonexistent.csv. Run export_training_data first.
+
+2025-04-30 18:26:03,593 - ERROR - ❌ Missing columns in CSV file: monthly_income, employment_status, existing_loans, credit_history_fetched, amount_requested, term_months, loan_to_income_ratio, credit_util_pct, emi_to_income_ratio, dpd_max, overdue_accounts, total_accounts, bureau_score, score_band, is_kyc_verified, govt_id_type, age, address_length, loan_approved
+
+2025-04-30 18:26:03,606 - INFO - Training XGBoost model...
+2025-04-30 18:26:03,606 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-04-30 18:26:03,606 - INFO - Training LightGBM model...
+2025-04-30 18:26:03,607 - INFO - LightGBM training complete. Report:
+Classification Report

@@ -12,7 +12,8 @@ class LoanDocumentSerializer(serializers.ModelSerializer):
         validators = [
             serializers.UniqueTogetherValidator(
                 queryset=LoanDocument.objects.all(),
-                fields=['loan', 'document_type']
+                fields=['loan', 'document_type'],
+                message="This document type has already been uploaded for this loan."
             )
         ]
 
@@ -25,19 +26,20 @@ class LoanApplicationSerializer(serializers.ModelSerializer):
             'id', 'amount_requested', 'purpose', 'term_months',
             'monthly_income', 'existing_loans',
         ]
+        read_only_fields = ['id']
 
     def validate_amount_requested(self, value):
-        if not isinstance(value, (int, float)) or value <= 0:
+        if value <= 0:
             raise serializers.ValidationError("The loan amount must be a positive number.")
         return value
 
     def validate_term_months(self, value):
-        if not isinstance(value, int) or value < 1 or value > 360:
-            raise serializers.ValidationError("The loan term must be an integer between 1 and 360 months.")
+        if value < 1 or value > 360:
+            raise serializers.ValidationError("The loan term must be between 1 and 360 months.")
         return value
 
     def validate_monthly_income(self, value):
-        if not isinstance(value, (int, float)) or value <= 0:
+        if value <= 0:
             raise serializers.ValidationError("Monthly income must be a positive number.")
         return value
 
@@ -70,30 +72,36 @@ class AdminLoanApplicationSerializer(serializers.ModelSerializer):
     documents = LoanDocumentSerializer(many=True, read_only=True)
     user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), required=True)
     amount_requested = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
-    status = serializers.CharField(source='get_status_display')
-    ai_decision = serializers.CharField(source='get_ai_decision_display')
+    status = serializers.CharField(source='get_status_display', read_only=True)
+    ai_decision = serializers.CharField(source='get_ai_decision_display', read_only=True)
 
     class Meta:
         model = LoanApplication
         fields = '__all__'
 
     def validate_amount_requested(self, value):
-        if not isinstance(value, (int, float)) or value <= 0:
+        if value <= 0:
             raise serializers.ValidationError("The loan amount must be a positive number.")
         return value
 
     def validate(self, data):
-        if data.get('existing_loans') and data.get('risk_score', 0) > 80:
+        risk_score = data.get('risk_score', 0)
+        credit_score = data.get('credit_score_records', 0)
+        income = data.get('monthly_income', 0)
+        loan_amount = data.get('amount_requested', 0)
+        has_existing_loans = data.get('existing_loans', False)
+
+        if has_existing_loans and risk_score > 80:
             raise serializers.ValidationError(
                 "High-risk applicants with existing loans cannot apply for new loans."
             )
 
-        if data.get('credit_score_records', 0) < 500:
+        if credit_score < 500:
             raise serializers.ValidationError(
                 "Application cannot be processed due to low credit score."
             )
 
-        if data.get('monthly_income', 0) < data.get('amount_requested', 0) / 12:
+        if income < (loan_amount / 12):
             raise serializers.ValidationError(
                 "Monthly income is insufficient for the requested loan amount."
             )

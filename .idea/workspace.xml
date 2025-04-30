@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="30/04/2025,5:23 PM" />
+    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="30/04/2025,5:39 PM">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/ml_training.log" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/ml_training.log" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,12 +44,12 @@
     &quot;assignee&quot;: &quot;swaroopsatav&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/swaroopsatav/Python-Project.git&quot;,
-    &quot;accountId&quot;: &quot;5db5fdad-c6fe-4fa6-b464-a3c094c64cd9&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/swaroopsatav/Python-Project.git",
+    "accountId": "57e1322d-e0ce-40e7-9b78-21a50858f315"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -67,13 +71,13 @@
     "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
     "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/aspl-81/PycharmProjects/Python-Project",
+    "last_opened_file_path": "/home/aspl-81/PycharmProjects/Python-Project/loan_process/loanapplications_loanapplication.csv",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "settings.sync",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "ts.external.directory.path": "/home/aspl-81/.local/share/JetBrains/Toolbox/apps/pycharm/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   },
@@ -161,6 +165,7 @@
       <workItem from="1746012036451" duration="1143000" />
       <workItem from="1746013550703" duration="313000" />
       <workItem from="1746013900184" duration="782000" />
+      <workItem from="1746014704304" duration="3228000" />
     </task>
     <task id="LOCAL-00001" summary="26/04/2025,6:33 PM">
       <option name="closed" value="true" />
@@ -394,7 +399,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746014021184</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="30/04/2025,5:39 PM">
+      <option name="closed" value="true" />
+      <created>1746014999627</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1746014999627</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -404,7 +417,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
-    <MESSAGE value="27/04/2025,1:32 PM" />
     <MESSAGE value="28/04/2025,10:39 AM" />
     <MESSAGE value="28/04/2025,11:15 AM" />
     <MESSAGE value="28/04/2025,11:29 AM" />
@@ -429,7 +441,8 @@
     <MESSAGE value="30/04/2025,2.31 PM" />
     <MESSAGE value="30/04/2025,4:00 PM" />
     <MESSAGE value="30/04/2025,5:23 PM" />
-    <option name="LAST_COMMIT_MESSAGE" value="30/04/2025,5:23 PM" />
+    <MESSAGE value="30/04/2025,5:39 PM" />
+    <option name="LAST_COMMIT_MESSAGE" value="30/04/2025,5:39 PM" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
