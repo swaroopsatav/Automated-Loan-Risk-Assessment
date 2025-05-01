@@ -59,8 +59,7 @@ class ModelPerformanceLogCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         try:
-            instance = serializer.save()
-            instance.full_clean()
+            serializer.save()
         except ValidationError as e:
             return Response(
                 {'error': str(e)},

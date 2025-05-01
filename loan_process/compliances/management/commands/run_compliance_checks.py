@@ -80,8 +80,7 @@ class Command(BaseCommand):
                                 defaults={
                                     "user": user,
                                     "is_compliant": is_compliant,
-                                    "check_notes": "\n".join(issues) if issues else "All checks passed",
-                                    "checked_on": now(),
+                                    "review_notes": "\n".join(issues) if issues else "All checks passed",
                                 }
                             )
                         except Exception as e:
@@ -97,9 +96,14 @@ class Command(BaseCommand):
                     total += 1
 
             # Print summary
+            if total > 0:
+                percentage = (compliant / total) * 100
+            else:
+                percentage = 0
+
             self.stdout.write(
                 self.style.SUCCESS(
-                    f"✅ Checked {total} loans — {compliant} compliant ({(compliant / total) * 100:.1f}%)"
+                    f"✅ Checked {total} loans — {compliant} compliant ({percentage:.1f}%)"
                 )
             )
             if not update_mode:

@@ -1,4 +1,4 @@
-from time import timezone
+from django.utils import timezone
 
 from django.db import models
 from users.models import CustomUser
@@ -132,5 +132,3 @@ class ComplianceAuditTrail(models.Model):
 
     def __str__(self):
         return f"{self.actor} - {self.get_action_display()} - Loan #{self.loan_application.id}"
-
-

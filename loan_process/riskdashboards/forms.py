@@ -51,3 +51,6 @@ class ModelPerformanceLogForm(forms.ModelForm):
 
     def clean_auc_score(self):
         return self.clean_metric('auc_score')
+
+    def clean_f1_score(self):
+        return self.clean_metric('f1_score')

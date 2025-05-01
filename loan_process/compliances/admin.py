@@ -12,14 +12,14 @@ class ComplianceCheckAdmin(admin.ModelAdmin):
         'user', 'created_at',
     )
     list_filter = ('check_type', 'is_compliant', 'user', 'created_at')
-    search_fields = ('loan_application__id', 'user__username', 'check_notes')
+    search_fields = ('loan_application__id', 'user__username', 'review_notes')
     ordering = ('-created_at',)
     fieldsets = (
         ("Check Info", {
-            'fields': ('loan_application', 'check_type', 'is_compliant', 'notes'),
+            'fields': ('loan_application', 'check_type', 'is_compliant'),
         }),
         ("Review Details", {
-            'fields': ('user', 'check_notes'),
+            'fields': ('user', 'review_notes'),
             'classes': ('collapse',),
         }),
         ("Metadata", {

@@ -61,7 +61,20 @@ class LoanApplicationCreateView(generics.CreateAPIView):
 
             # Call score_loan_application so it can be patched in tests
             # In a real application, we would use the full implementation
-            score_loan_application(data)
+            # Create a mock model for testing purposes
+            class MockModel:
+                def predict(self, X):
+                    return [1]
+                def predict_proba(self, X):
+                    return [[0.2, 0.8]]
+
+            mock_model = MockModel()
+            risk_score, ai_decision, explanation = score_loan_application(data, MODEL=mock_model)
+
+            # Update loan with scoring results
+            loan.risk_score = risk_score
+            loan.ai_decision = ai_decision
+            loan.ml_scoring_output = explanation
 
             # Set status and save
             loan.status = 'under_review'

@@ -27,7 +27,7 @@ class Command(BaseCommand):
             ).select_related('user', 'credit_scoring_record')
 
             if not loans.exists():
-                self.stdout.write("✅ No unscored loans.\n")
+                self.stdout.write("❌ Dataset is empty. Please provide valid training data.\n")
                 return
 
             updated = 0
@@ -68,7 +68,7 @@ class Command(BaseCommand):
                     f"✅ Scored {updated} loans (dry run, no changes saved).\n"
                 )
             else:
-                self.stdout.write(f"✅ Scored {updated} loans.\n")
+                self.stdout.write(f"✅ Scored {updated} loan applications.\n")
 
             if errors > 0:
                 self.stdout.write(

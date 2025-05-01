@@ -213,8 +213,9 @@ class LoanApplicationModelTest(TestCase):
             term_months=12,
             monthly_income=Decimal('5000'),
         )
-        with self.assertRaisesMessage(ValidationError, "Amount requested must be greater than zero"):
+        with self.assertRaises(ValidationError) as context:
             loan_application.clean()
+        self.assertEqual(context.exception.message_dict["amount_requested"][0], "Amount requested must be greater than zero")
 
     def test_invalid_credit_score(self):
         loan_application = LoanApplication(
@@ -227,8 +228,7 @@ class LoanApplicationModelTest(TestCase):
         )
         with self.assertRaises(ValidationError) as context:
             loan_application.clean()
-        self.assertEqual(str(context.exception), "Credit score must be between 300 and 850")
-        loan_application.clean()
+        self.assertEqual(context.exception.message_dict["credit_score_records"][0], "Credit score must be between 300 and 850")
 
 
 class LoanDocumentModelTest(TestCase):
@@ -438,7 +438,7 @@ class LoanApplicationCreateViewTest(TestCase):
             'existing_loans': False,
         }
         response = self.client.post(reverse('loans:loan-submit'), data)
-        self.assertNotEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     @patch('loanapplications.views.score_loan_application', side_effect=Exception('AI Scoring Failed'))
     def test_loan_application_ai_scoring_failure(self, mock_score):
@@ -483,25 +483,29 @@ class LoanDocumentUploadViewTest(TestCase):
         self.loan = LoanApplication.objects.create(user=self.user, amount_requested=10000, purpose='Home renovation')
 
     def test_upload_document_success(self):
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        test_file = SimpleUploadedFile("test_file.pdf", b"file_content", content_type="application/pdf")
         data = {
             'loan': self.loan.id,
             'document_type': 'id_proof',
-            'file': 'test_file.pdf',
+            'file': test_file,
         }
         response = self.client.post(reverse('loans:loan-documents', args=[self.loan.id]), data)
-        self.assertNotEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_upload_document_unauthorized(self):
+        from django.core.files.uploadedfile import SimpleUploadedFile
         other_user = CustomUser.objects.create_user(username='otheruser', password='password123',email="otheruser@test.com")
         other_client = APIClient()
         other_client.force_authenticate(user=other_user)
+        test_file = SimpleUploadedFile("test_file.pdf", b"file_content", content_type="application/pdf")
         data = {
             'loan': self.loan.id,
             'document_type': 'id_proof',
-            'file': 'test_file.pdf',
+            'file': test_file,
         }
         response = other_client.post(reverse('loans:loan-documents', args=[self.loan.id]), data)
-        self.assertNotEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
 class AdminLoanListViewTest(TestCase):
@@ -754,7 +758,7 @@ class TestAutoScoreLoansCommand(unittest.TestCase):
 
         self.command.handle(dry_run=False,output_file="test.csv")
 
-        mock_stdout.write.assert_called_with("❌ Dataset is empty. Please provide valid training data.\n")
+        mock_stdout.write.assert_called_with("ERROR: Dataset is empty. Please provide valid training data.\n")
         mock_score_loan_application.assert_not_called()
 
     @patch("loanapplications.management.commands.auto_score_loans.LoanApplication.objects")
@@ -780,7 +784,7 @@ class TestAutoScoreLoansCommand(unittest.TestCase):
         loan_mock.save()
 
         loan_mock.save.assert_called_once()
-        mock_stdout.write.assert_any_call("❌ Dataset is empty. Please provide valid training data.\n")
+        mock_stdout.write.assert_any_call("ERROR: Dataset is empty. Please provide valid training data.\n")
 
     @patch("loanapplications.management.commands.auto_score_loans.LoanApplication.objects")
     @patch("loanapplications.management.commands.auto_score_loans.score_loan_application")
@@ -818,7 +822,7 @@ class TestAutoScoreLoansCommand(unittest.TestCase):
         self.command.handle(dry_run=True, output_file="test.csv")
 
         # Verify stdout write was called with expected message
-        mock_stdout.write.assert_called_once_with("❌ Dataset is empty. Please provide valid training data.\n")
+        mock_stdout.write.assert_called_once_with("ERROR: Dataset is empty. Please provide valid training data.\n")
 
         loan_mock.save.assert_not_called()
 
@@ -846,11 +850,21 @@ class TestExportTrainingDataCommand(unittest.TestCase):
         self.command.handle(dry_run=False, output="output.csv", input_file="test.csv")
 
         mock_open_file.assert_not_called()
-        self.mock_stdout.write.assert_called_with("❌ Dataset is empty. Please provide valid training data.\n")
+        self.mock_stdout.write.assert_called_with("ERROR: Dataset is empty. Please provide valid training data.\n")
 
-    @patch("loanapplications.management.commands.export_training_data.Command._open_file", new_callable=mock_open)
-    @patch("loanapplications.management.commands.export_training_data.LoanApplication.objects")
-    def test_handle_successful_export(self, mock_loan_objects, mock_open_file):
+    def test_handle_successful_export(self):
+        # Import the Command class directly
+        from loanapplications.management.commands.export_training_data import Command
+        from loanapplications.models import LoanApplication
+
+        # Create a new instance of Command
+        command = Command()
+
+        # Create a mock for stdout
+        mock_stdout = MagicMock()
+        command.stdout = mock_stdout
+
+        # Create mocks for the user and loan
         mock_user = MagicMock(
             credit_score=750,
             annual_income=50000,
@@ -873,21 +887,32 @@ class TestExportTrainingDataCommand(unittest.TestCase):
         mock_loan = MagicMock(
             id=1,
             user=mock_user,
-            mock_experian=[mock_report],
+            mock_experian=MagicMock(first=MagicMock(return_value=mock_report)),
             monthly_income=4000,
             amount_requested=15000,
             term_months=36,
             existing_loans=2,
             status="approved"
         )
-        mock_loan_objects.select_related.return_value.prefetch_related.return_value.all.return_value.exists.return_value = True
-        mock_loan_objects.select_related.return_value.prefetch_related.return_value.all.return_value = [mock_loan]
 
-        # Remove the sys.stdout patch and use the command's stdout directly
-        self.command.handle(output="output.csv", input_file="test.csv", dry_run=False)
+        # Mock LoanApplication.objects
+        with patch("loanapplications.models.LoanApplication.objects") as mock_loan_objects:
+            mock_loan_objects.select_related.return_value.prefetch_related.return_value.all.return_value = [mock_loan]
 
-        mock_open_file.assert_not_called()
-        self.mock_stdout.write.assert_called_with("❌ Dataset is empty. Please provide valid training data.\n")
+            # Mock the _open_file method
+            with patch.object(Command, "_open_file", mock_open()) as mock_file:
+                # Call the handle method
+                command.handle(output="output.csv", dry_run=False)
+
+                # Verify that _open_file was called once
+                mock_file().write.assert_called()
+
+            # Check that all expected messages were written to stdout
+            mock_stdout.write.assert_has_calls([
+                mock.call("Options: {'output': 'output.csv', 'dry_run': False}\n"),
+                mock.call("dry_run: False\n"),
+                mock.call("✅ Exported 1 loan applications to output.csv\n")
+            ])
 
     @patch("loanapplications.management.commands.export_training_data.Command._open_file", new_callable=mock_open)
     @patch("loanapplications.management.commands.export_training_data.LoanApplication.objects")
@@ -909,7 +934,7 @@ class TestExportTrainingDataCommand(unittest.TestCase):
 
         # Verify expectations
         mock_open_file.assert_not_called()
-        mock_stdout.write.assert_called_with("❌ Dataset is empty. Please provide valid training data.\n")
+        mock_stdout.write.assert_called_with("ERROR: Dataset is empty. Please provide valid training data.\n")
 
     def test_handle_io_error(self):
         # Import the Command class directly
@@ -925,7 +950,7 @@ class TestExportTrainingDataCommand(unittest.TestCase):
         # Create a mock for the _open_file method that raises an IOError
         with patch.object(Command, "_open_file", side_effect=IOError("Mock IO Error")) as mock_open:
             # Call the handle method
-            command.handle(output="output.csv", dry_run=False)
+            command.handle(output="output.csv", dry_run=False, input_file="test.csv")
 
             # Verify that _open_file was called once
             mock_open.assert_called_once_with("output.csv")
@@ -1080,7 +1105,7 @@ class TestTrainLoanModelCommand(unittest.TestCase):
         result = self.command.handle(input_file="nonexistent.csv", output_dir="ml_models")
 
         # Check if the expected message is in the result
-        self.assertIn("CSV file not found at nonexistent.csv", result)
+        self.assertIn("CSV file not found at nonexistent.csv", result[0])
 
     @patch("loanapplications.management.commands.train_loan_model.pd.read_csv")
     @patch("loanapplications.management.commands.train_loan_model.os.path.exists")
@@ -1092,12 +1117,12 @@ class TestTrainLoanModelCommand(unittest.TestCase):
         result = self.command.handle(input_file="test.csv", output_dir="ml_models")
 
         # Check if the expected message is in the result
-        self.assertIn("Missing columns in CSV file", result)
+        self.assertIn("Missing columns in CSV file", result[0])
 
         # Check for some specific missing columns to ensure the message is correct
         missing_columns = ["monthly_income", "employment_status", "existing_loans"]
         for col in missing_columns:
-            self.assertIn(col, result, f"Missing column '{col}' not found in output")
+            self.assertIn(col, result[0], f"Missing column '{col}' not found in output")
 
     @patch("loanapplications.management.commands.train_loan_model.StandardScaler")
     @patch("loanapplications.management.commands.train_loan_model.train_test_split")
@@ -1179,10 +1204,10 @@ class TestTrainLoanModelCommand(unittest.TestCase):
         mock_joblib_dump.assert_called()
 
         # Check if the expected messages are in the result
-        self.assertFalse(isinstance(result, list), "Result should be a list")
-        self.assertNotEqual(len(result), 2, "Result should contain 2 messages")
-        self.assertIn("❌", result[0])
-        self.assertNotIn("ml_models/lightgbm_loan_model.pkl", result[1])
+        self.assertTrue(isinstance(result, list), "Result should be a list")
+        self.assertEqual(len(result), 2, "Result should contain 2 messages")
+        self.assertIn("SUCCESS:", result[0])
+        self.assertIn("ml_models/lightgbm_loan_model.pkl", result[1])
 
     @patch("loanapplications.management.commands.train_loan_model.pd.read_csv")
     @patch("loanapplications.management.commands.train_loan_model.os.path.exists")

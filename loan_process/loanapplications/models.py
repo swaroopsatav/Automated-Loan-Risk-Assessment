@@ -73,11 +73,11 @@ class LoanApplication(models.Model):
 
     def clean(self):
         if self.amount_requested and self.amount_requested <= 0:
-            raise ValidationError("Amount requested must be greater than zero")
+            raise ValidationError({"amount_requested": ["Amount requested must be greater than zero"]})
         if self.monthly_income and self.monthly_income <= 0:
-            raise ValidationError("Monthly income must be greater than zero")
+            raise ValidationError({"monthly_income": ["Monthly income must be greater than zero"]})
         if self.credit_score_records and (self.credit_score_records < 300 or self.credit_score_records > 850):
-            raise ValidationError("Credit score must be between 300 and 850")
+            raise ValidationError({"credit_score_records": ["Credit score must be between 300 and 850"]})
 
     def save(self, *args, **kwargs):
         self.clean()

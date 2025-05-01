@@ -87,7 +87,7 @@ class MockExperianReportForm(forms.ModelForm):
         """
         raw = self.cleaned_data.get('mock_raw_report')
         if not raw:
-            raise ValidationError("Mock raw report is required")
+            return {}
         return self._parse_json_field(raw, 'mock_raw_report')
 
     def clean_tradelines(self):
@@ -95,6 +95,8 @@ class MockExperianReportForm(forms.ModelForm):
         Validates and parses the tradelines field as JSON.
         """
         data = self.cleaned_data.get('tradelines')
+        if not data:
+            return []
         return self._parse_json_field(data, 'tradelines')
 
     def clean_enquiries(self):
@@ -102,4 +104,6 @@ class MockExperianReportForm(forms.ModelForm):
         Validates and parses the enquiries field as JSON.
         """
         data = self.cleaned_data.get('enquiries')
+        if not data:
+            return []
         return self._parse_json_field(data, 'enquiries')

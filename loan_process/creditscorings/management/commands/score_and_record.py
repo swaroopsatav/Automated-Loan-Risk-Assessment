@@ -30,7 +30,7 @@ class Command(BaseCommand):
         Main logic for scoring loan applications.
         """
         # Filter loans based on the --all flag
-        base_queryset = LoanApplication.objects.select_related('user', 'mock_experian')
+        base_queryset = LoanApplication.objects.select_related('user').prefetch_related('mock_experian')
         loans = base_queryset.all() if options['all'] else base_queryset.filter(
             ai_decision__isnull=True,
             status__in=["pending", "under_review"]
@@ -52,10 +52,11 @@ class Command(BaseCommand):
                 try:
                     with transaction.atomic():
                         try:
-                            report = loan.mock_experian
+                            # Get the latest report from the related manager
+                            report = loan.mock_experian.latest('created_at')
                             if not report:
                                 raise ObjectDoesNotExist
-                        except ObjectDoesNotExist:
+                        except (ObjectDoesNotExist, loan.mock_experian.model.DoesNotExist):
                             raise ValueError("No Experian report found")
 
                         user = loan.user

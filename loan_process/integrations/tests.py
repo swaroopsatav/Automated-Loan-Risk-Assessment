@@ -75,11 +75,25 @@ class MockKYCRecordFormTests(TestCase):
 
     def test_valid_mock_response(self):
         """Test that a valid JSON mock_response is accepted."""
+        # Create test user
+        user = CustomUser.objects.create(username="testuser_kyc")
+
         form = MockKYCRecordForm(data={
             "mock_response": self.valid_mock_response,
             "dob": self.valid_dob,
+            "user": user.id,
+            "pan_number": "ABCDE1234F",
+            "pan_holder_name": "Test User",
+            "pan_verified": True,
+            "aadhaar_last_4": "1234",
+            "aadhaar_verified": True,
+            "kyc_type": "full",
+            "verification_status": "verified",
+            "verification_source": "mock_provider"
         })
-        self.assertFalse(form.is_valid())
+        if not form.is_valid():
+            print(f"Form errors: {form.errors}")
+        self.assertTrue(form.is_valid())
 
     def test_invalid_mock_response(self):
         """Test that an invalid JSON mock_response is rejected."""
@@ -109,12 +123,29 @@ class MockExperianReportFormTests(TestCase):
 
     def test_valid_mock_raw_report(self):
         """Test that a valid JSON mock_raw_report is accepted."""
+        # Create test user and loan application
+        user = CustomUser.objects.create(username="testuser_form")
+        loan_application = LoanApplication.objects.create(user=user, amount_requested=50000)
+
         form = MockExperianReportForm(data={
             "mock_raw_report": self.valid_mock_raw_report,
             "tradelines": '[]',
             "enquiries": '[]',
+            "user": user.id,
+            "loan_application": loan_application.id,
+            "bureau_score": 750,
+            "score_band": "good",
+            "report_status": "completed",
+            "total_accounts": 5,
+            "active_accounts": 4,
+            "overdue_accounts": 1,
+            "dpd_max": 0,
+            "credit_utilization_pct": 45.0,
+            "emi_to_income_ratio": 0.3
         })
-        self.assertFalse(form.is_valid())
+        if not form.is_valid():
+            print(f"Form errors: {form.errors}")
+        self.assertTrue(form.is_valid())
 
     def test_invalid_mock_raw_report(self):
         """Test that an invalid JSON mock_raw_report is rejected."""
@@ -128,12 +159,29 @@ class MockExperianReportFormTests(TestCase):
 
     def test_valid_tradelines_and_enquiries(self):
         """Test that valid JSON for tradelines and enquiries is accepted."""
+        # Create test user and loan application
+        user = CustomUser.objects.create(username="testuser_form2")
+        loan_application = LoanApplication.objects.create(user=user, amount_requested=50000)
+
         form = MockExperianReportForm(data={
             "mock_raw_report": self.valid_mock_raw_report,
             "tradelines": self.valid_tradelines,
             "enquiries": self.valid_enquiries,
+            "user": user.id,
+            "loan_application": loan_application.id,
+            "bureau_score": 750,
+            "score_band": "good",
+            "report_status": "completed",
+            "total_accounts": 5,
+            "active_accounts": 4,
+            "overdue_accounts": 1,
+            "dpd_max": 0,
+            "credit_utilization_pct": 45.0,
+            "emi_to_income_ratio": 0.3
         })
-        self.assertFalse(form.is_valid())
+        if not form.is_valid():
+            print(f"Form errors: {form.errors}")
+        self.assertTrue(form.is_valid())
 
     def test_invalid_tradelines(self):
         """Test that an invalid JSON tradelines field is rejected."""
@@ -388,10 +436,9 @@ class MyMockKYCViewTests(APITestCase):
         """
         Test that the authenticated user can retrieve their KYC record.
         """
-        response = self.client.get("/integrations/mock/kyc/")
-        self.assertNotEqual(response.status_code, status.HTTP_200_OK)  # Expect 200 OK
-        if response.status_code == status.HTTP_200_OK:
-            self.assertEqual(response.data["pan_number"], self.mock_kyc.pan_number)
+        response = self.client.get("/api/integrations/mock/kyc/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)  # Expect 200 OK
+        self.assertEqual(response.data["pan_number"], self.mock_kyc.pan_number)
 
     def test_kyc_record_not_found(self):
         """
@@ -401,7 +448,7 @@ class MyMockKYCViewTests(APITestCase):
         MockKYCRecord.objects.all().delete()
 
         # Perform the GET request
-        response = self.client.get("/integrations/mock/kyc/")
+        response = self.client.get("/api/integrations/mock/kyc/")
 
         # Ensure the status code is 404
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -445,37 +492,28 @@ class MockExperianReportViewTests(APITestCase):
         """
         Test that the authenticated user can retrieve their mock Experian report.
         """
-        response = self.client.get(f"/integrations/mock/experian/loan/{self.loan_application.id}/")
-        self.assertNotEqual(response.status_code, status.HTTP_200_OK)  # Expect 200 OK
-        if response.status_code == status.HTTP_200_OK:
-            self.assertEqual(response.data["bureau_score"], self.mock_report.bureau_score)
+        response = self.client.get(f"/api/integrations/mock/experian/loan/{self.loan_application.id}/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)  # Expect 200 OK
+        self.assertEqual(response.data["bureau_score"], self.mock_report.bureau_score)
 
     def test_permission_denied_for_other_user(self):
         """
         Test that another user cannot access someone else's mock Experian report.
         """
-        self.client.logout()
-        self.client.login(username="otheruser", password="password123")
-        response = self.client.get(f"/integrations/mock/experian/loan/{self.loan_application.id}/")
-        self.assertNotEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.other_user)
+        response = self.client.get(f"/api/integrations/mock/experian/loan/{self.loan_application.id}/")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_report_not_found(self):
         """
         Test that a 404 is returned if the mock Experian report does not exist.
         """
         MockExperianReport.objects.all().delete()  # Remove the report
-        response = self.client.get(f"/integrations/mock/experian/loan/{self.loan_application.id}/")
+        response = self.client.get(f"/api/integrations/mock/experian/loan/{self.loan_application.id}/")
 
         # Ensure the status code is 404
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-        # Parse response as JSON
-        response_data = {"detail": response.content.decode()}
-
-        # Check that the response contains a 'detail' field
-        self.assertIn("detail", response_data)
-        self.assertNotEqual(response_data["detail"],
-                         f"No mock Experian report found for loan ID {self.loan_application.id}.")
 
 
 class AllMockExperianReportsViewTests(APITestCase):
@@ -506,35 +544,35 @@ class AllMockExperianReportsViewTests(APITestCase):
         """
         Test that an admin user can list all mock Experian reports.
         """
-        self.client.force_login(self.admin_user)  # Log in as admin!
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.admin_user)  # Log in as admin!
 
-        response = self.client.get("/integrations/mock/experian/reports/")
+        response = self.client.get("/api/integrations/mock/experian/reports/")
 
-        self.assertNotEqual(response.status_code, status.HTTP_200_OK)  # Expect 200 OK
-        if response.status_code == status.HTTP_200_OK:
-            self.assertEqual(len(response.data), 1)  # Verify that there is 1 report in the response
+        self.assertEqual(response.status_code, status.HTTP_200_OK)  # Expect 200 OK
+        self.assertEqual(len(response.data), 1)  # Verify that there is 1 report in the response
 
     def test_filter_mock_reports_by_user(self):
         """
         Test that mock reports can be filtered by user ID.
         """
-        self.client.force_login(self.admin_user)  # Log in as admin!
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.admin_user)  # Log in as admin!
 
-        response = self.client.get(f"/integrations/mock/experian/reports/?user_id={self.user.id}")
+        response = self.client.get(f"/api/integrations/mock/experian/reports/?user_id={self.user.id}")
 
-        self.assertNotEqual(response.status_code, status.HTTP_200_OK)  # Expect 200 OK
-        if response.status_code == status.HTTP_200_OK:
-            self.assertEqual(len(response.data), 1)  # Verify that there is 1 report in the response
-            self.assertEqual(response.data[0]["user"], self.user.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)  # Expect 200 OK
+        self.assertEqual(len(response.data), 1)  # Verify that there is 1 report in the response
+        self.assertEqual(response.data[0]["user"], self.user.id)
 
     def test_non_admin_access_denied(self):
         """
         Test that a non-admin user cannot access the list of mock Experian reports.
         """
-        self.client.logout()
-        self.client.login(username="testuser", password="password123")
-        response = self.client.get("/integrations/mock/experian/reports/")
-        self.assertNotEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)  # Log in as regular user
+        response = self.client.get("/api/integrations/mock/experian/reports/")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
 from django.test import TestCase

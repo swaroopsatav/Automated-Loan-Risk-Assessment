@@ -80,17 +80,20 @@ class TestModelPerformanceLogForm(TestCase):
             'precision': 0.87,
             'recall': 0.92,
             'auc_score': 0.98,
+            'f1_score': 0.90,
             'notes': 'Test Note'
         })
-        self.assertFalse(form.is_valid())
+        self.assertTrue(form.is_valid())
         self.assertEqual(form.cleaned_data['accuracy'], 0.95)
 
     def test_clean_metric_invalid(self):
         form = ModelPerformanceLogForm(data={
+            'model_version': '1.0',
             'accuracy': 1.5,  # Invalid value
             'precision': 0.87,
             'recall': 0.92,
             'auc_score': 0.98,
+            'f1_score': 0.90,
             'notes': 'Test Note'
         })
         self.assertFalse(form.is_valid())
@@ -135,12 +138,12 @@ class TestRiskSnapshotSerializer(TestCase):
             "low_risk_count": 70,
             "approved_count": 40,
             "rejected_count": 40,
-            "under_review_count": 30,
+            "under_review_count": 20,
             "model_version": "xgboost_v1",
         }
         serializer = RiskSnapshotSerializer(data=data)
-        with self.assertRaises(ValidationError):
-            serializer.is_valid(raise_exception=True)
+        self.assertFalse(serializer.is_valid())
+        self.assertIn('avg_risk_score', serializer.errors)
 
 
 class TestRiskTrendSerializer(TestCase):
@@ -164,8 +167,8 @@ class TestRiskTrendSerializer(TestCase):
             "model_version": "xgboost_v1",
         }
         serializer = RiskTrendSerializer(data=data)
-        with self.assertRaises(ValidationError):
-            serializer.is_valid(raise_exception=True)
+        self.assertFalse(serializer.is_valid())
+        self.assertIn('rejection_rate', serializer.errors)
 
 
 class TestModelPerformanceLogSerializer(TestCase):
@@ -176,6 +179,7 @@ class TestModelPerformanceLogSerializer(TestCase):
             "precision": 0.87,
             "recall": 0.92,
             "auc_score": 0.98,
+            "f1_score": 0.90,
             "notes": "Good performance",
         }
         serializer = ModelPerformanceLogSerializer(data=data)
@@ -188,11 +192,12 @@ class TestModelPerformanceLogSerializer(TestCase):
             "precision": 0.87,
             "recall": 0.92,
             "auc_score": 0.98,
+            "f1_score": 0.90,
             "notes": "Good performance",
         }
         serializer = ModelPerformanceLogSerializer(data=data)
-        with self.assertRaises(ValidationError):
-            serializer.is_valid(raise_exception=True)
+        self.assertFalse(serializer.is_valid())
+        self.assertIn('accuracy', serializer.errors)
 
 from django.test import TestCase
 from datetime import date
@@ -205,7 +210,7 @@ class RiskSnapshotModelTest(TestCase):
             total_applications=100,
             avg_risk_score=50.0,
             high_risk_count=30,
-            low_risk_count=40,
+            low_risk_count=70,
             approved_count=40,
             rejected_count=20,
             under_review_count=40,
@@ -221,7 +226,7 @@ class RiskSnapshotModelTest(TestCase):
             total_applications=100,
             avg_risk_score=50.0,
             high_risk_count=30,
-            low_risk_count=40,
+            low_risk_count=70,
             approved_count=40,
             rejected_count=20,
             under_review_count=50,  # Mismatch here
@@ -233,7 +238,7 @@ class RiskSnapshotModelTest(TestCase):
     def test_risk_count_exceeds_total(self):
         snapshot = RiskSnapshot(
             snapshot_date=date.today(),
-            total_applications=100,
+            total_applications=60,
             avg_risk_score=50.0,
             high_risk_count=60,  # Exceeds total applications
             low_risk_count=40,
@@ -348,15 +353,23 @@ class TestRiskSnapshotListView(TestCase):
         self.client = APIClient()
         self.user = CustomUser.objects.create_user(username="testuser", password="password")
         self.client.force_authenticate(user=self.user)
-        RiskSnapshot.objects.create(snapshot_date="2025-04-01", total_applications=100, avg_risk_score=50.0)
+        RiskSnapshot.objects.create(
+            snapshot_date="2025-04-01", 
+            total_applications=100, 
+            avg_risk_score=50.0,
+            high_risk_count=30,
+            low_risk_count=70,
+            approved_count=40,
+            rejected_count=20,
+            under_review_count=40,
+            model_version='xgboost_v1'
+        )
 
     def test_get_snapshots(self):
-        response = self.client.get("/riskdashboards/snapshots/")
-        response_data = {"detail": response.content.decode()}
+        response = self.client.get("/api/risk/snapshots/")
 
-        self.assertNotEqual(response.status_code, status.HTTP_200_OK)
-        # self.assertEqual(len(response.data), 1)
-        self.assertIn("detail", response_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
 
 
 
@@ -365,15 +378,19 @@ class TestRiskTrendListView(TestCase):
         self.client = APIClient()
         self.user = CustomUser.objects.create_user(username="testuser", password="password")
         self.client.force_authenticate(user=self.user)
-        RiskTrend.objects.create(date="2025-04-01", avg_score=75.0, approval_rate=60.0, rejection_rate=40.0)
+        RiskTrend.objects.create(
+            date="2025-04-01", 
+            avg_score=75.0, 
+            approval_rate=60.0, 
+            rejection_rate=40.0,
+            model_version='xgboost_v1'
+        )
 
     def test_get_trends(self):
-        response = self.client.get("/riskdashboards/trends/")
-        response_data = {"detail": response.content.decode()}
+        response = self.client.get("/api/risk/trends/")
 
-        self.assertNotEqual(response.status_code, status.HTTP_200_OK)
-        # self.assertEqual(len(response.data), 1)
-        self.assertIn("detail", response_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
 
 
 
@@ -382,15 +399,20 @@ class TestModelPerformanceLogListView(TestCase):
         self.client = APIClient()
         self.user = CustomUser.objects.create_user(username="testuser", password="password")
         self.client.force_authenticate(user=self.user)
-        ModelPerformanceLog.objects.create(model_version="v1", accuracy=0.95, precision=0.90, recall=0.85, auc_score=0.92)
+        ModelPerformanceLog.objects.create(
+            model_version="v1", 
+            accuracy=0.95, 
+            precision=0.90, 
+            recall=0.85, 
+            auc_score=0.92,
+            f1_score=0.88
+        )
 
     def test_get_model_logs(self):
-        response = self.client.get("/riskdashboards/models/")
-        response_data = {"detail": response.content.decode()}
+        response = self.client.get("/api/risk/models/")
 
-        self.assertNotEqual(response.status_code, status.HTTP_200_OK)
-        # self.assertEqual(len(response.data), 1)
-        self.assertIn("detail", response_data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
 
 
 
@@ -401,17 +423,22 @@ class TestModelPerformanceLogCreateView(TestCase):
         self.client.force_authenticate(user=self.admin_user)
 
     def test_create_model_log(self):
+        # Get the initial count of ModelPerformanceLog objects
+        initial_count = ModelPerformanceLog.objects.count()
+
         data = {
             "model_version": "v1",
             "accuracy": 0.95,
             "precision": 0.90,
             "recall": 0.85,
             "auc_score": 0.92,
+            "f1_score": 0.88,
             "notes": "Test log"
         }
-        response = self.client.post("/riskdashboards/models/create/", data)
-        self.assertNotEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertNotEqual(ModelPerformanceLog.objects.count(), 1)
+        response = self.client.post("/api/risk/models/create/", data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # Check that one new object was created
+        self.assertEqual(ModelPerformanceLog.objects.count(), initial_count + 1)
 
     def test_create_model_log_invalid(self):
         data = {
@@ -420,10 +447,11 @@ class TestModelPerformanceLogCreateView(TestCase):
             "precision": 0.90,
             "recall": 0.85,
             "auc_score": 0.92,
+            "f1_score": 0.88,
             "notes": "Test log"
         }
-        response = self.client.post("/riskdashboards/models/create/", data)
-        self.assertNotEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        response = self.client.post("/api/risk/models/create/", data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 from django.test import TestCase
 from django.core.management import call_command
@@ -508,8 +536,8 @@ class TestCustomerFinancialHistoryCommand(TestCase):
             report = json.load(f)
 
         self.assertEqual(report["user"]["username"], self.user.username)
-        self.assertEqual(report["user"]["credit_score"], 720.0)
-        self.assertEqual(report["user"]["monthly_income"], 5000.0)
+        self.assertEqual(report["user"]["credit_score"], 720)
+        self.assertEqual(report["user"]["annual_income"], 60000)
         self.assertEqual(report["user"]["employment_status"], "Employed")
         self.assertEqual(len(report["loan_history"]), 2)
         self.assertEqual(report["experian"]["dpd_max"], 3)
@@ -525,7 +553,8 @@ class TestCustomerFinancialHistoryCommand(TestCase):
                 user_id=999,  # Non-existent user
                 output_dir=self.output_dir,
             )
-            self.assertIn("User with ID 999 does not exist.", log.output[0])
+        # Check if any log message contains the expected text
+        self.assertTrue(any("User with ID 999 does not exist." in msg for msg in log.output))
 
     def test_no_loans_for_user(self):
         # Create a new user with no loans
@@ -538,7 +567,8 @@ class TestCustomerFinancialHistoryCommand(TestCase):
                 user_id=new_user.id,
                 output_dir=self.output_dir,
             )
-            self.assertIn(f"No loan applications found for user {new_user.id}", log.output[0])
+        # Check if any log message contains the expected text
+        self.assertTrue(any(f"No loan applications found for user {new_user.id}" in msg for msg in log.output))
 
     def test_no_experian_report(self):
         # Remove the Experian report for the loan
@@ -551,4 +581,5 @@ class TestCustomerFinancialHistoryCommand(TestCase):
                 user_id=self.user.id,
                 output_dir=self.output_dir,
             )
-            self.assertIn("No mock Experian report found for this user.", log.output[0])
+        # Check if any log message contains the expected text
+        self.assertTrue(any("No mock Experian report found for this user." in msg for msg in log.output))

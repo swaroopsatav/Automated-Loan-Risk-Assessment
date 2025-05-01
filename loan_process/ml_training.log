@@ -5466,3 +5466,186 @@ Classification Report
 2025-05-01 15:01:22,381 - INFO - Training LightGBM model...
 2025-05-01 15:01:22,382 - INFO - LightGBM training complete. Report:
 Classification Report
+2025-05-01 21:17:12,530 - INFO - Training XGBoost model...
+2025-05-01 21:17:12,531 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:17:12,531 - INFO - Training LightGBM model...
+2025-05-01 21:17:12,532 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:17:54,902 - INFO - Training XGBoost model...
+2025-05-01 21:17:54,903 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:17:54,903 - INFO - Training LightGBM model...
+2025-05-01 21:17:54,904 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:35:36,946 - INFO - Training XGBoost model...
+2025-05-01 21:35:36,948 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:35:36,948 - INFO - Training LightGBM model...
+2025-05-01 21:35:36,949 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:37:24,234 - INFO - Training XGBoost model...
+2025-05-01 21:37:24,236 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:37:24,236 - INFO - Training LightGBM model...
+2025-05-01 21:37:24,237 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:38:56,028 - INFO - Training XGBoost model...
+2025-05-01 21:38:56,030 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:38:56,031 - INFO - Training LightGBM model...
+2025-05-01 21:38:56,032 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:40:27,780 - INFO - Training XGBoost model...
+2025-05-01 21:40:27,781 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:40:27,781 - INFO - Training LightGBM model...
+2025-05-01 21:40:27,782 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:41:10,336 - INFO - Training XGBoost model...
+2025-05-01 21:41:10,337 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:41:10,337 - INFO - Training LightGBM model...
+2025-05-01 21:41:10,338 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:43:24,057 - INFO - Training XGBoost model...
+2025-05-01 21:43:24,058 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:43:24,059 - INFO - Training LightGBM model...
+2025-05-01 21:43:24,059 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:45:12,103 - INFO - Training XGBoost model...
+2025-05-01 21:45:12,104 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:45:12,104 - INFO - Training LightGBM model...
+2025-05-01 21:45:12,105 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:46:14,235 - INFO - Training XGBoost model...
+2025-05-01 21:46:14,236 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:46:14,237 - INFO - Training LightGBM model...
+2025-05-01 21:46:14,237 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:49:14,400 - INFO - Training XGBoost model...
+2025-05-01 21:49:14,401 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:49:14,401 - INFO - Training LightGBM model...
+2025-05-01 21:49:14,401 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:51:38,036 - INFO - Training XGBoost model...
+2025-05-01 21:51:38,037 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:51:38,037 - INFO - Training LightGBM model...
+2025-05-01 21:51:38,038 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 21:54:08,672 - INFO - Training XGBoost model...
+2025-05-01 21:54:08,673 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 21:54:08,674 - INFO - Training LightGBM model...
+2025-05-01 21:54:08,674 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 22:01:00,188 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:01:00,195 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:01:00,205 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:01:00,211 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:01:00,221 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:01:00,229 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:01:00,267 - ERROR - ERROR: An error occurred: Mock CSV read error
+Traceback (most recent call last):
+  File "C:\Users\Admin\PycharmProjects\Python-Project\loan_process\loanapplications\management\commands\train_loan_model.py", line 52, in handle
+    df = pd.read_csv(file_path)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1167, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1171, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1226, in _execute_mock_call
+    raise effect
+Exception: Mock CSV read error
+2025-05-01 22:01:00,271 - ERROR - ERROR: CSV file not found at nonexistent.csv. Run export_training_data first.
+
+2025-05-01 22:01:00,273 - ERROR - ERROR: Missing columns in CSV file: monthly_income, employment_status, existing_loans, credit_history_fetched, amount_requested, term_months, loan_to_income_ratio, credit_util_pct, emi_to_income_ratio, dpd_max, overdue_accounts, total_accounts, bureau_score, score_band, is_kyc_verified, govt_id_type, age, address_length, loan_approved
+
+2025-05-01 22:01:00,305 - INFO - Training XGBoost model...
+2025-05-01 22:01:00,305 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 22:01:00,306 - INFO - Training LightGBM model...
+2025-05-01 22:01:00,306 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 22:04:43,748 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:04:43,753 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:04:43,766 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:04:43,771 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:04:43,778 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:04:43,786 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:04:43,828 - ERROR - ERROR: An error occurred: Mock CSV read error
+Traceback (most recent call last):
+  File "C:\Users\Admin\PycharmProjects\Python-Project\loan_process\loanapplications\management\commands\train_loan_model.py", line 52, in handle
+    df = pd.read_csv(file_path)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1167, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1171, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1226, in _execute_mock_call
+    raise effect
+Exception: Mock CSV read error
+2025-05-01 22:04:43,834 - ERROR - ERROR: CSV file not found at nonexistent.csv. Run export_training_data first.
+
+2025-05-01 22:04:43,835 - ERROR - ERROR: Missing columns in CSV file: monthly_income, employment_status, existing_loans, credit_history_fetched, amount_requested, term_months, loan_to_income_ratio, credit_util_pct, emi_to_income_ratio, dpd_max, overdue_accounts, total_accounts, bureau_score, score_band, is_kyc_verified, govt_id_type, age, address_length, loan_approved
+
+2025-05-01 22:04:43,866 - INFO - Training XGBoost model...
+2025-05-01 22:04:43,867 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 22:04:43,867 - INFO - Training LightGBM model...
+2025-05-01 22:04:43,868 - INFO - LightGBM training complete. Report:
+Classification Report
+2025-05-01 22:07:18,202 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:07:18,208 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:07:18,213 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:07:18,219 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:07:18,226 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:07:18,233 - ERROR - ERROR: Dataset is empty. Please provide valid training data.
+
+2025-05-01 22:07:18,282 - ERROR - ERROR: An error occurred: Mock CSV read error
+Traceback (most recent call last):
+  File "C:\Users\Admin\PycharmProjects\Python-Project\loan_process\loanapplications\management\commands\train_loan_model.py", line 52, in handle
+    df = pd.read_csv(file_path)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1167, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1171, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python313\Lib\unittest\mock.py", line 1226, in _execute_mock_call
+    raise effect
+Exception: Mock CSV read error
+2025-05-01 22:07:18,288 - ERROR - ERROR: CSV file not found at nonexistent.csv. Run export_training_data first.
+
+2025-05-01 22:07:18,289 - ERROR - ERROR: Missing columns in CSV file: monthly_income, employment_status, existing_loans, credit_history_fetched, amount_requested, term_months, loan_to_income_ratio, credit_util_pct, emi_to_income_ratio, dpd_max, overdue_accounts, total_accounts, bureau_score, score_band, is_kyc_verified, govt_id_type, age, address_length, loan_approved
+
+2025-05-01 22:07:18,317 - INFO - Training XGBoost model...
+2025-05-01 22:07:18,317 - INFO - XGBoost training complete. Report:
+Classification Report
+2025-05-01 22:07:18,318 - INFO - Training LightGBM model...
+2025-05-01 22:07:18,318 - INFO - LightGBM training complete. Report:
+Classification Report

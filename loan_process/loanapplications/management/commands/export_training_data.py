@@ -48,6 +48,15 @@ class Command(BaseCommand):
             self.stdout.write(f"Failed to open file {output_file}: {str(e)}\n")
             return
 
+        # Optimize query with select_related and prefetch_related 
+        loans = LoanApplication.objects.select_related('user').prefetch_related('mock_experian').all()
+
+        # Check if there are any loan records
+        if not loans:
+            self.stdout.write("❌ Dataset is empty. Please provide valid training data.\n")
+            f.close()
+            return
+
         try:
             writer = csv.writer(f)
 
@@ -64,24 +73,14 @@ class Command(BaseCommand):
 
             count = 0
 
-            # Optimize query with select_related and prefetch_related 
-            loans = LoanApplication.objects.select_related('user').prefetch_related('mock_experian').all()
-
-            if not loans.exists():
-                self.stdout.write('No loan records found\n')
-                f.close()
-                return
-
             for loan in loans:
                 try:
                     user = loan.user
-                    if not user:
-                        self.stdout.write(f'⚠️ Skipped loan #{loan.id} due to: No user associated with loan\n')
-                        continue
+                    report = loan.mock_experian.first() if hasattr(loan, 'mock_experian') else None
 
-                    report = loan.mock_experian.first()
-                    if not report:
-                        raise ValueError("No credit report found")
+                    if not user or not report:
+                        self.stdout.write(f'⚠️ Skipping loan #{loan.id}: Missing user or mock_experian data\n')
+                        continue
 
                     # Derived features with safe type conversion
                     try:
@@ -139,9 +138,9 @@ class Command(BaseCommand):
                     continue
 
             if count == 1:
-                self.stdout.write(f"✅ Exported {count} records to {output_file}\n")
+                self.stdout.write(f"✅ Exported {count} loan applications to {output_file}\n")
             else:
-                self.stdout.write(f"✅ Exported {count} records to {output_file}\n")
+                self.stdout.write(f"✅ Exported {count} loan applications to {output_file}\n")
 
         except IOError as e:
             self.stdout.write(f"Failed to write to file {output_file}: {str(e)}\n")
