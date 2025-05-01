@@ -63,6 +63,12 @@ class Command(BaseCommand):
                 logger.error(msg)
                 return msg
 
+            if len(df) == 0:
+                msg = "❌ Dataset is empty. Please provide valid training data.\n"
+                self.stdout.write(msg)
+                logger.error(msg)
+                return msg
+
             # Handle missing values
             df = df.fillna(df.mean(numeric_only=True))
 
@@ -77,14 +83,27 @@ class Command(BaseCommand):
             numerical_features = X.select_dtypes(include=['float64', 'int64']).columns
             scaler = StandardScaler()
 
-            # Handle the transformation in a way that's easier to mock in tests
-            transformed_values = scaler.fit_transform(X[numerical_features])
-            for i, col in enumerate(numerical_features):
-                X[col] = transformed_values[:, i]
+            # Check if we have numerical features to transform
+            if len(numerical_features) > 0 and len(X) > 0:
+                # Handle the transformation in a way that's easier to mock in tests
+                transformed_values = scaler.fit_transform(X[numerical_features])
+                for i, col in enumerate(numerical_features):
+                    X[col] = transformed_values[:, i]
+            else:
+                self.stdout.write("⚠️ No numerical features to transform or empty dataset\n")
+                logger.warning("No numerical features to transform or empty dataset")
 
             # Save scaler for future predictions
             os.makedirs(output_dir, exist_ok=True)
             joblib.dump(scaler, os.path.join(output_dir, "feature_scaler.pkl"))
+
+            # Ensure we have enough samples for split
+            min_samples = max(10, int(0.2 * len(df)))  # At least 10 samples or 20% of data
+            if len(df) < min_samples:
+                msg = f"❌ Not enough samples for training. Minimum required: {min_samples}\n"
+                self.stdout.write(msg)
+                logger.error(msg)
+                return msg
 
             # Ensure we have enough samples for stratification
             if len(y) < 10 or len(y.unique()) < 2 or y.value_counts().min() < 2:

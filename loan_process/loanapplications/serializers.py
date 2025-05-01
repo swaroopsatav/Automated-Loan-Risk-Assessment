@@ -91,19 +91,18 @@ class AdminLoanApplicationSerializer(serializers.ModelSerializer):
         loan_amount = data.get('amount_requested', 0)
         has_existing_loans = data.get('existing_loans', False)
 
+        errors = {}
+
         if has_existing_loans and risk_score > 80:
-            raise serializers.ValidationError(
-                "High-risk applicants with existing loans cannot apply for new loans."
-            )
+            errors['amount_requested'] = "High-risk applicants with existing loans cannot apply for new loans."
 
         if credit_score < 500:
-            raise serializers.ValidationError(
-                "Application cannot be processed due to low credit score."
-            )
+            errors['amount_requested'] = "Application cannot be processed due to low credit score."
 
         if income < (loan_amount / 12):
-            raise serializers.ValidationError(
-                "Monthly income is insufficient for the requested loan amount."
-            )
+            errors['amount_requested'] = "Monthly income is insufficient for the requested loan amount."
+
+        if errors:
+            raise serializers.ValidationError(errors)
 
         return data

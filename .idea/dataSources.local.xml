@@ -16,7 +16,7 @@
       </schema-mapping>
       <load-sources>user_and_system_sources</load-sources>
     </data-source>
-    <data-source name="db.sqlite3" uuid="1b601872-e954-4e24-8aaa-6d2014464085">
+    <data-source name="db.sqlite3" uuid="494b3ad5-91df-4d50-8e6d-a2f1331c671d">
       <database-info product="SQLite" version="3.45.1" jdbc-version="4.2" driver-name="SQLite JDBC" driver-version="3.45.1.0" dbms="SQLITE" exact-version="3.45.1" exact-driver-version="3.45">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>

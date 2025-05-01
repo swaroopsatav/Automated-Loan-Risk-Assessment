@@ -1,16 +1,1 @@
 credit_score,annual_income,monthly_income,employment_status,existing_loans,credit_history_fetched,amount_requested,term_months,loan_to_income_ratio,credit_util_pct,emi_to_income_ratio,dpd_max,overdue_accounts,total_accounts,bureau_score,score_band,is_kyc_verified,govt_id_type,age,address_length,loan_approved
-750,600000,50000,employed,1,1,100000,12,0.17,30.5,0.4,5,2,10,800,good,1,passport,35,20,1
-720,580000,48000,employed,0,1,95000,12,0.16,28.5,0.35,0,0,8,780,good,1,passport,33,18,1
-700,550000,45000,employed,1,1,90000,24,0.16,32.0,0.38,10,1,7,760,good,1,passport,30,16,1
-680,520000,43000,employed,0,1,85000,24,0.16,35.0,0.4,15,1,6,740,good,1,passport,28,15,1
-650,360000,30000,employed,0,1,50000,24,0.14,40.2,0.3,0,0,5,700,good,1,passport,28,15,1
-620,330000,27500,employed,1,1,45000,36,0.14,45.0,0.35,20,1,5,680,fair,1,passport,32,14,1
-600,300000,25000,self_employed,0,1,40000,36,0.13,50.0,0.4,25,1,4,650,fair,1,passport,40,12,1
-580,270000,22500,self_employed,1,1,35000,36,0.13,55.0,0.45,30,1,4,630,fair,1,passport,42,11,0
-550,240000,20000,self_employed,1,1,30000,36,0.13,60.5,0.5,30,1,3,600,fair,1,passport,45,10,0
-520,210000,17500,self_employed,1,1,25000,24,0.12,65.0,0.55,35,2,3,570,fair,0,passport,48,9,0
-500,200000,16500,unemployed,1,1,22000,12,0.11,70.0,0.6,40,2,3,550,poor,0,passport,25,8,0
-480,190000,15800,unemployed,1,0,21000,12,0.11,75.0,0.65,50,2,2,520,poor,0,passport,23,6,0
-450,180000,15000,unemployed,1,0,20000,12,0.11,80.3,0.6,60,2,2,500,poor,0,passport,22,5,0
-420,170000,14000,unemployed,1,0,18000,12,0.11,85.0,0.7,70,2,2,480,poor,0,passport,21,4,0
-400,160000,13000,unemployed,1,0,15000,12,0.09,90.0,0.75,80,2,1,450,poor,0,passport,20,3,0
