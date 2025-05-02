@@ -4,32 +4,106 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="01/05/2025,10:14 PM">
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/utils/apiUtils.js" afterDir="false" />
+    <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="30/04/2025,6:29 PM">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/compliance/ComplianceAuditTrail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/compliance/ComplianceAuditTrail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/compliance/ComplianceCheckUpdate.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/compliance/ComplianceCheckUpdate.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/compliance/LoanComplianceChecks.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/compliance/LoanComplianceChecks.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/compliance/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/compliance/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/credit/AdminScoreDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/AdminScoreDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/credit/AdminScoreList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/AdminScoreList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/credit/RescoreButton.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/RescoreButton.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/credit/ScoreViewer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/ScoreViewer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/credit/scoreApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/credit/scoreApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/integrations/AdminMockExperianList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/integrations/AdminMockExperianList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/integrations/MockExperianViewer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/integrations/MockExperianViewer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/integrations/MockKYCViewer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/integrations/MockKYCViewer.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/integrations/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/integrations/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDocumentUpload.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDocumentUpload.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanSubmitForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanSubmitForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/MyLoanList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/MyLoanList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/ModelPerformanceLog.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/ModelPerformanceLog.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/RiskSnapshotList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/RiskSnapshotList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/RiskTrendChart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/RiskTrendChart.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.junie/guidelines.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/identifier.sqlite" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/loan_process/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loan_process/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/loan_training_data.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/management/commands/auto_score_loans.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/management/commands/auto_score_loans.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications_loanapplication.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250428_102705.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250428_102705.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250428_102705_aurwjGU.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250428_103647.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250428_103647.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250428_103647_N6DqPEe.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113211.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113211.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113211_EhwuAnO.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113427.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113427.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250429_113427_5lphXw5.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_09iJwIf.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_0Ai9fCL.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_15jU3tE.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_29DKDM2.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_2dCn0UG.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_2k9MG7O.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_2t98Lx9.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_4kJbXPU.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_64rkQ0A.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_6b5Ko5M.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_76dzmXj.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_7l8tCtE.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_7lFHvku.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_8EGirQT.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_8FpWt0A.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_D4AJDVH.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_JO9NYxP.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_JSV2ssQ.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_KUg9fBQ.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_LbGsq6Z.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_LcZbSY9.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_LlQ6mT3.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_MC4bwrh.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_RJSbYlA.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_RyXGYcy.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_S6ICiYT.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_Tqcx6xJ.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_WLMqJFI.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_WUi3sD6.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_Xl7LEgo.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_YEloWnl.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_YRZH0NZ.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_YvfYZZk.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_ZjAcpWL.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_bbJQgG5.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_cyf5pDr.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_dQaUCsX.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_eXjtXAb.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_fAEllGu.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_fIGSfaR.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_gA9mrHK.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_hhqY80i.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_hyeAVmd.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_iFUVXHN.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_iGvafKN.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_iQhj7Dz.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_kliwvLW.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_m2jozOy.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_n0udESZ.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_nAzx8iv.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_nPZ6TYP.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_nQ1uWPk.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_o8evFBy.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_pZVXeG1.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_pmjrRY9.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_podhuN4.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_qexiajp.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_rHlo7xo.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_uYER97H.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_uiYr33V.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_vFfToa4.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_ycBtezz.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_zDU7CZl.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/media/loan_documents/loan_1/id_proof/test_file_zkbW3C2.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/ml_models/feature_names.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/ml_models/feature_scaler.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/ml_models/lightgbm_loan_model.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/ml_models/xgboost_loan_model.pkl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/ml_training.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/test.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/users/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loan_process/users_customuser.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ml_training.log" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +143,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/swaroopsatav/Python-Project.git&quot;,
-    &quot;accountId&quot;: &quot;b85490a2-0407-446f-a8b7-eb795801a60f&quot;
+    &quot;accountId&quot;: &quot;57e1322d-e0ce-40e7-9b78-21a50858f315&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -93,21 +167,20 @@
     "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
     "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Users/Admin/PycharmProjects/Python-Project",
+    "last_opened_file_path": "/home/aspl-81/PycharmProjects/Python-Project",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "C:/Users/Admin/AppData/Roaming/JetBrains/PyCharm2025.1/node/versions/22.15.0/node",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "terminal",
+    "settings.editor.selected.configurable": "ml.llm.LLMConfigurable",
     "ts.external.directory.path": "/home/aspl-81/.local/share/JetBrains/Toolbox/apps/pycharm/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [
-      "sqlite",
-      "mysql"
+      "mysql",
+      "sqlite"
     ]
   }
 }]]></component>
@@ -169,11 +242,6 @@
       </set>
     </attachedChunks>
   </component>
-  <component name="SshConsoleOptionsProvider">
-    <option name="myEncoding" value="UTF-8" />
-    <option name="myConnectionType" value="DEFAULT_SDK" />
-    <option name="myConnectionId" value="" />
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="" />
@@ -193,16 +261,12 @@
       <workItem from="1746012036451" duration="1143000" />
       <workItem from="1746013550703" duration="313000" />
       <workItem from="1746013900184" duration="782000" />
-      <workItem from="1746014704304" duration="3228000" />
-      <workItem from="1746071583846" duration="400000" />
-      <workItem from="1746071988199" duration="142000" />
-      <workItem from="1746072204250" duration="590000" />
-      <workItem from="1746072813924" duration="706000" />
-      <workItem from="1746073806757" duration="303000" />
-      <workItem from="1746074258387" duration="1294000" />
-      <workItem from="1746075629562" duration="265000" />
-      <workItem from="1746076037215" duration="33387000" />
-      <workItem from="1746112350678" duration="8536000" />
+      <workItem from="1746014704304" duration="3820000" />
+      <workItem from="1746019019431" duration="125000" />
+      <workItem from="1746158932107" duration="104000" />
+      <workItem from="1746159074596" duration="332000" />
+      <workItem from="1746161358928" duration="479000" />
+      <workItem from="1746162048344" duration="9825000" />
     </task>
     <task id="LOCAL-00001" summary="26/04/2025,6:33 PM">
       <option name="closed" value="true" />
@@ -444,23 +508,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746014999627</updated>
     </task>
-    <task id="LOCAL-00031" summary="01/05/2025,4:24 PM">
+    <task id="LOCAL-00031" summary="30/04/2025,6:29 PM">
       <option name="closed" value="true" />
-      <created>1746096862749</created>
+      <created>1746017991839</created>
       <option name="number" value="00031" />
       <option name="presentableId" value="LOCAL-00031" />
       <option name="project" value="LOCAL" />
-      <updated>1746096862749</updated>
+      <updated>1746017991839</updated>
     </task>
-    <task id="LOCAL-00032" summary="01/05/2025,10:14 PM">
-      <option name="closed" value="true" />
-      <created>1746117862532</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1746117862532</updated>
-    </task>
-    <option name="localTasksCounter" value="33" />
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -470,6 +526,7 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
+    <MESSAGE value="28/04/2025,11:15 AM" />
     <MESSAGE value="28/04/2025,11:29 AM" />
     <MESSAGE value="28/04/2025,11:41 AM" />
     <MESSAGE value="28/04/2025,11:48 AM" />
@@ -493,9 +550,8 @@
     <MESSAGE value="30/04/2025,4:00 PM" />
     <MESSAGE value="30/04/2025,5:23 PM" />
     <MESSAGE value="30/04/2025,5:39 PM" />
-    <MESSAGE value="01/05/2025,4:24 PM" />
-    <MESSAGE value="01/05/2025,10:14 PM" />
-    <option name="LAST_COMMIT_MESSAGE" value="01/05/2025,10:14 PM" />
+    <MESSAGE value="30/04/2025,6:29 PM" />
+    <option name="LAST_COMMIT_MESSAGE" value="30/04/2025,6:29 PM" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -507,6 +563,10 @@
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/loan_process/loanapplications/management/commands/export_training_data.py</url>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/loan_process/compliances/management/commands/run_compliance_checks.py</url>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

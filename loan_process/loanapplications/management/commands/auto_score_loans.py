@@ -16,7 +16,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
-        dry_run = kwargs.get('dry_run', False)
+        dry_run = kwargs.get('dry_run', True)
         self.stdout.write(f"dry_run: {dry_run}\n")
 
         # Use transaction to ensure data consistency
