@@ -58,7 +58,9 @@ def score_and_record(loan_application) -> None:
                 decision=decision,
                 scoring_inputs=features,
                 scoring_output=explanation,
-                credit_score=loan_application.credit_score_records,
+                credit_utilization_pct=features.get('credit_util_pct'),
+                dpd_max=features.get('dpd_max'),
+                emi_to_income_ratio=features.get('emi_to_income_ratio'),
             )
 
             # Update loan application

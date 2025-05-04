@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import JSONField
 from users.models import CustomUser
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
@@ -23,7 +22,15 @@ class LoanApplication(models.Model):
         ('manual_review', 'Manual Review'),
     ]
 
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='loan_applications',default=1)
+    # Required document types for a complete application
+    REQUIRED_DOCUMENT_TYPES = [
+        'bank_statement',
+        'salary_slip',
+        'id_proof',
+        'address_proof',
+    ]
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='loan_applications')
 
     amount_requested = models.DecimalField(
         max_digits=12,
@@ -50,7 +57,7 @@ class LoanApplication(models.Model):
         null=True,
         blank=True
     )
-    ml_scoring_output = JSONField(null=True, blank=True)
+    ml_scoring_output = models.JSONField(null=True, blank=True)
 
     # Status & workflow  
     status = models.CharField(
@@ -82,6 +89,53 @@ class LoanApplication(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
+
+    def completion_percentage(self):
+        """
+        Calculate the completion percentage of the loan application.
+
+        The calculation is based on:
+        1. Required fields being filled (50%)
+        2. Required documents being uploaded (40%)
+        3. Status of the application (10%)
+
+        Returns:
+            float: Percentage of completion (0-100)
+        """
+        percentage = 0
+
+        # Check required fields (50%)
+        required_fields = [
+            self.amount_requested,
+            self.purpose,
+            self.term_months,
+            self.monthly_income,
+            self.credit_score_records
+        ]
+
+        fields_filled = sum(1 for field in required_fields if field is not None)
+        percentage += (fields_filled / len(required_fields)) * 50
+
+        # Check required documents (40%)
+        uploaded_document_types = set(
+            self.documents.values_list('document_type', flat=True)
+        )
+
+        documents_uploaded = sum(1 for doc_type in self.REQUIRED_DOCUMENT_TYPES 
+                                if doc_type in uploaded_document_types)
+        percentage += (documents_uploaded / len(self.REQUIRED_DOCUMENT_TYPES)) * 40
+
+        # Check status (10%)
+        status_weights = {
+            'pending': 0.25,
+            'under_review': 0.5,
+            'approved': 1.0,
+            'rejected': 1.0
+        }
+
+        percentage += status_weights.get(self.status, 0) * 10
+
+        return round(percentage, 1)
 
 
 class LoanDocument(models.Model):

@@ -4,10 +4,12 @@ def extract_features_from_mock(mock_report):
 
     try:
         return {
-            'bureau_score': int(mock_report.bureau_score or 0),
-            'credit_utilization_pct': float(mock_report.credit_utilization_pct or 0),
+            'credit_score': int(mock_report.bureau_score or 0),
+            'credit_util_pct': float(mock_report.credit_utilization_pct or 0),
             'dpd_max': int(mock_report.dpd_max or 0),
             'emi_to_income_ratio': float(mock_report.emi_to_income_ratio or 0),
+            'monthly_income': float(mock_report.loan_application.monthly_income or 0),
+            'existing_loans': bool(mock_report.loan_application.existing_loans),
             'total_accounts': int(mock_report.total_accounts or 0),
             'overdue_accounts': int(mock_report.overdue_accounts or 0),
         }

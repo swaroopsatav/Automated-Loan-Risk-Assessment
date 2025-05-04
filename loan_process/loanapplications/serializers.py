@@ -50,6 +50,19 @@ class LoanApplicationDetailSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     status = serializers.CharField(source='get_status_display')
     ai_decision = serializers.CharField(source='get_ai_decision_display')
+    completion_percentage = serializers.SerializerMethodField()
+
+    def get_completion_percentage(self, obj):
+        """
+        Get the completion percentage of the loan application.
+
+        Args:
+            obj: The LoanApplication instance
+
+        Returns:
+            float: The completion percentage
+        """
+        return obj.completion_percentage()
 
     class Meta:
         model = LoanApplication
@@ -58,7 +71,7 @@ class LoanApplicationDetailSerializer(serializers.ModelSerializer):
             'monthly_income', 'existing_loans', 'credit_score_records',
             'risk_score', 'ai_decision', 'status',
             'submitted_at', 'reviewed_at', 'notes',
-            'ml_scoring_output', 'documents'
+            'ml_scoring_output', 'documents', 'completion_percentage'
         ]
         read_only_fields = [
             'id', 'user', 'risk_score', 'ai_decision', 'status',
@@ -74,6 +87,19 @@ class AdminLoanApplicationSerializer(serializers.ModelSerializer):
     amount_requested = serializers.DecimalField(max_digits=10, decimal_places=2, required=True)
     status = serializers.CharField(source='get_status_display', read_only=True)
     ai_decision = serializers.CharField(source='get_ai_decision_display', read_only=True)
+    completion_percentage = serializers.SerializerMethodField()
+
+    def get_completion_percentage(self, obj):
+        """
+        Get the completion percentage of the loan application.
+
+        Args:
+            obj: The LoanApplication instance
+
+        Returns:
+            float: The completion percentage
+        """
+        return obj.completion_percentage()
 
     class Meta:
         model = LoanApplication

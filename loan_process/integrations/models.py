@@ -167,17 +167,16 @@ class MockExperianReport(models.Model):
     tradelines = models.JSONField(
         blank=True,
         null=True,
-        default=list,
         help_text="The tradelines in the credit report."
     )
     enquiries = models.JSONField(
         blank=True,
         null=True,
-        default=list,
         help_text="The enquiries in the credit report."
     )
     mock_raw_report = models.JSONField(
-        default=dict,
+        null=True,
+        blank=True,
         help_text="The raw mock API response for the credit report."
     )
     created_at = models.DateTimeField(

@@ -45,13 +45,14 @@ class CreditScoreRecord(models.Model):
     )
     scoring_inputs = models.JSONField(
         help_text="Input features used by the model for scoring.",
-        default=dict
+        default=dict,
+        null=True,
+        blank=True
     )
     scoring_output = models.JSONField(
         blank=True,
         null=True,
-        help_text="Optional: Model outputs like SHAP values or feature importance.",
-        default=dict
+        help_text="Optional: Model outputs like SHAP values or feature importance."
     )
 
     created_at = models.DateTimeField(
