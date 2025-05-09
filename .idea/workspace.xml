@@ -5,55 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3109a877-066b-4d3c-ac92-9e8a24b67d04" name="Changes" comment="30/04/2025,6:29 PM">
-      <change afterPath="$PROJECT_DIR$/loan_process/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/ForgotPassword.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/Home.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/OAuthButtons.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/OAuthCallback.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/ProfileEditForm.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/ResetPassword.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loan_process/tests/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loan_process/tests/test_throttling.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loan_process/throttling.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/templates/loanapplications/emails/application_submitted.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/templates/loanapplications/emails/document_uploaded.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/templates/loanapplications/emails/status_approved.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/templates/loanapplications/emails/status_rejected.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/templates/loanapplications/emails/status_under_review.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/tests/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/tests/test_auto_scoring.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/utils/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/utils/email_utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/loanapplications/utils/encryption_utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250509_062817.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250509_062817.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/media/kyc_documents/user_None/20250509_062817_7cpBEnn.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/riskdashboards/templates/riskdashboards/emails/model_performance_alert.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/riskdashboards/templates/riskdashboards/emails/model_performance_update.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/riskdashboards/tests/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/riskdashboards/tests/test_email_utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/riskdashboards/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/riskdashboards/utils/email_utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loan_process/test_email.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Python-Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Python-Project.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/Loan Approval.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/loans/LoanDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/ModelPerformanceLog.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/risk_dashboard/ModelPerformanceLog.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/LoginForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/LoginForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/Profile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/Profile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/RegisterForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/RegisterForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/frontend/src/users/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/frontend/src/users/auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/loan_process/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loan_process/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/loanapplications/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/loanapplications/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loan_process/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/loan_process/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +72,7 @@
     &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/aspl-81/PycharmProjects/Python-Project&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/aspl-81/PycharmProjects/Loan Approval&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -221,6 +176,8 @@
       <workItem from="1746418893593" duration="19000" />
       <workItem from="1746771801811" duration="4021000" />
       <workItem from="1746780663852" duration="6396000" />
+      <workItem from="1746791465661" duration="3397000" />
+      <workItem from="1746796253242" duration="381000" />
     </task>
     <task id="LOCAL-00001" summary="26/04/2025,6:33 PM">
       <option name="closed" value="true" />
