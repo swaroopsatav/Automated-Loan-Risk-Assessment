@@ -22,6 +22,8 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from rest_framework.documentation import include_docs_urls
+from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -33,6 +35,17 @@ urlpatterns = [
     path("api/compliance/", include('compliances.urls')),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+
+    # API Documentation
+    path('api/docs/', include_docs_urls(
+        title='Loan Processing API',
+        description='API documentation for the Loan Processing System'
+    )),
+    path('api/schema/', get_schema_view(
+        title='Loan Processing API Schema',
+        description='API schema for the Loan Processing System',
+        version='1.0.0'
+    ), name='openapi-schema'),
 ]
 
 if settings.DEBUG:

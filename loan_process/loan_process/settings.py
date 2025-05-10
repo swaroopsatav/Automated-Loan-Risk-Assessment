@@ -91,7 +91,7 @@ WSGI_APPLICATION = "loan_process.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'loan_processing',
+        'NAME': 'loan_approval',
         'USER': 'loan_user',
         'PASSWORD': 'Welcome12!',
         'HOST': 'localhost',
@@ -170,7 +170,13 @@ REST_FRAMEWORK = {
         'user_burst': '30/minute',
         'user_sustained': '1000/day',
         'sensitive': '10/hour',
-    }
+    },
+    # Documentation settings
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
 }
 
 # JWT settings

@@ -5,12 +5,13 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.utils.html import strip_tags
+from asgiref.sync import sync_to_async
 import logging
 from ..models import ModelPerformanceLog
 
 logger = logging.getLogger('riskdashboards.email')
 
-def send_model_performance_notification(model_log, recipients=None):
+async def send_model_performance_notification(model_log, recipients=None):
     """
     Send an email notification about ML model performance.
 
@@ -45,8 +46,8 @@ def send_model_performance_notification(model_log, recipients=None):
             staff_users = User.objects.filter(is_staff=True)
             recipients = [user.email for user in staff_users if user.email]
 
-        # Send email
-        send_mail(
+        # Send email asynchronously
+        await sync_to_async(send_mail)(
             subject=subject,
             message=plain_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
@@ -61,7 +62,7 @@ def send_model_performance_notification(model_log, recipients=None):
         logger.error(f"Failed to send model performance notification: {str(e)}")
         return False
 
-def send_model_performance_threshold_alert(model_log, threshold_metric, threshold_value, recipients=None):
+async def send_model_performance_threshold_alert(model_log, threshold_metric, threshold_value, recipients=None):
     """
     Send an alert when a model performance metric falls below a threshold.
 
@@ -104,8 +105,8 @@ def send_model_performance_threshold_alert(model_log, threshold_metric, threshol
             staff_users = User.objects.filter(is_staff=True)
             recipients = [user.email for user in staff_users if user.email]
 
-        # Send email
-        send_mail(
+        # Send email asynchronously
+        await sync_to_async(send_mail)(
             subject=subject,
             message=plain_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
