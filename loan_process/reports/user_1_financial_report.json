@@ -1,0 +1,30 @@
+{
+  "user": {
+    "username": "jdaniels",
+    "credit_score": 540.0,
+    "annual_income": 789916.89,
+    "employment_status": "salaried"
+  },
+  "loan_history": [
+    {
+      "amount": 424490.0,
+      "status": "rejected",
+      "ai_decision": "reject",
+      "risk_score": 0.0,
+      "submitted_at": "2025-05-11"
+    },
+    {
+      "amount": 300665.0,
+      "status": "rejected",
+      "ai_decision": "reject",
+      "risk_score": 0.0,
+      "submitted_at": "2025-05-11"
+    }
+  ],
+  "experian": {
+    "dpd_max": 90,
+    "emi_to_income_ratio": 0.11,
+    "credit_utilization_pct": 12.57,
+    "total_accounts": 10
+  }
+}

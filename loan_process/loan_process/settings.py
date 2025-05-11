@@ -46,12 +46,14 @@ INSTALLED_APPS = [
     "compliances",
     "integrations",
     "riskdashboards",
+    "core",
     "rest_framework",
     "corsheaders",
     "django_extensions",
     "rest_framework.authtoken",
     'django_cryptography',
     'rest_framework_simplejwt',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -91,17 +93,14 @@ WSGI_APPLICATION = "loan_process.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'loan_approval',
-        'USER': 'loan_user',
-        'PASSWORD': 'Welcome12!',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        # 'PORT': '',  # Leave empty for socket
-        # 'OPTIONS': {
-        #     'unix_socket': '/var/run/mysqld/mysqld.sock',  # Correct socket path
-        # },
+        'NAME': 'loan_processing',  # Your database name
+        'USER': 'swaroop',  # Your MySQL user
+        'PASSWORD': 'Welcome12!',  # Your MySQL password
+        'HOST': 'localhost',  # Localhost
+        'PORT': '3306',  # Default MySQL port
     }
 }
+
 
 
 # Password validation
@@ -172,7 +171,7 @@ REST_FRAMEWORK = {
         'sensitive': '10/hour',
     },
     # Documentation settings
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
@@ -197,13 +196,36 @@ CORS_ALLOWED_ORIGINS = [
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development - prints to console
 # For production, use the following:
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@gmail.com'
-# EMAIL_HOST_PASSWORD = 'your-app-password'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'swaroopsatav2468@gmail.com'
+EMAIL_HOST_PASSWORD = 'pcia uwkz uixq ybng'
 DEFAULT_FROM_EMAIL = 'Loan Processing System <noreply@loanprocessing.com>'
 
 # Frontend URL for links in emails
 FRONTEND_URL = 'http://localhost:5173'  # Change this in production
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Loan Processing API',
+    'DESCRIPTION': 'Comprehensive API documentation for the Loan Processing System.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': '/api/',
+    'COMPONENT_SPLIT_REQUEST': True,
+    'APPEND_COMPONENTS': {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+            }
+        }
+    },
+    'SECURITY': [
+        {
+            "BearerAuth": []
+        }
+    ],
+}

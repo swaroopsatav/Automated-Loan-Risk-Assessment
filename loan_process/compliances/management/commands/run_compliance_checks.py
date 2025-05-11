@@ -1,3 +1,7 @@
+"""
+Management command to run compliance checks on loans and users.
+This script checks for KYC verification and required document submissions for loan applications.
+"""
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
 from django.db import transaction
@@ -115,3 +119,4 @@ class Command(BaseCommand):
             self.stderr.write(
                 self.style.ERROR(f"❌ An error occurred: {str(e)}")
             )
+            return

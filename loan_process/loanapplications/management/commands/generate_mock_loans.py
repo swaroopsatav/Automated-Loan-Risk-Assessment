@@ -1,8 +1,11 @@
+"""
+Management command to generate mock loan applications with AI-style approval/rejection logic.
+This script creates realistic test data for loan applications with associated credit reports.
+"""
 from django.core.management.base import BaseCommand
 from faker import Faker
 import random
 from decimal import Decimal, ROUND_HALF_UP
-import sys
 
 from users.models import CustomUser
 from loanapplications.models import LoanApplication
@@ -18,22 +21,38 @@ class Command(BaseCommand):
         parser.add_argument("count", type=int, help="Number of mock loans to create")
         parser.add_argument("--min-amount", type=int, default=50000, help="Minimum loan amount")
         parser.add_argument("--max-amount", type=int, default=1000000, help="Maximum loan amount")
+        parser.add_argument("--auto-score-pct", type=int, default=30, 
+                           help="Percentage of loans to create for auto-scoring (0-100)")
 
-    def create_loan(self, user, amount_requested, term_months, purpose, monthly_income, existing_loans, approved):
-        from loanapplications.models import LoanApplication
-        return LoanApplication.objects.create(
-            user=user,
-            amount_requested=amount_requested,
-            term_months=term_months,
-            purpose=purpose,
-            monthly_income=monthly_income,
-            existing_loans=existing_loans,
-            ai_decision="approve" if approved else "reject",
-            status="approved" if approved else "rejected"
-        )
+    def create_loan(self, user, amount_requested, term_months, purpose, monthly_income, existing_loans, approved, for_auto_scoring=False):
+        """Create a loan application record with the given parameters."""
+        if for_auto_scoring:
+            # Create a loan application without ai_decision for auto-scoring
+            return LoanApplication.objects.create(
+                user=user,
+                amount_requested=amount_requested,
+                term_months=term_months,
+                purpose=purpose,
+                monthly_income=monthly_income,
+                existing_loans=existing_loans,
+                ai_decision=None,
+                status=random.choice(["pending", "under_review"])
+            )
+        else:
+            # Create a loan application with ai_decision already set
+            return LoanApplication.objects.create(
+                user=user,
+                amount_requested=amount_requested,
+                term_months=term_months,
+                purpose=purpose,
+                monthly_income=monthly_income,
+                existing_loans=existing_loans,
+                ai_decision="approve" if approved else "reject",
+                status="approved" if approved else "rejected"
+            )
 
     def create_experian_report(self, user, loan, credit_score, dpd, credit_util, emi_ratio, total_accounts, active_accounts, overdue_accounts):
-        from integrations.models import MockExperianReport
+        """Create a mock Experian credit report for the given loan and user."""
         amount_requested = loan.amount_requested
         return MockExperianReport.objects.create(
             user=user,
@@ -62,26 +81,33 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        # For testing purposes, allow dependency injection
-        from loanapplications.models import LoanApplication
-        from integrations.models import MockExperianReport
+        """Main command logic for generating mock loan applications."""
 
         count = options["count"]
         min_amount = options["min_amount"]
         max_amount = options["max_amount"]
+        auto_score_pct = options["auto_score_pct"]
 
         # Validate parameters
         if count <= 0:
-            raise ValueError("Count must be greater than zero")
+            self.stdout.write(self.style.ERROR("Count must be greater than zero"))
+            return
 
         if min_amount <= 0:
-            raise ValueError("Minimum amount must be greater than zero")
+            self.stdout.write(self.style.ERROR("Minimum amount must be greater than zero"))
+            return
 
         if max_amount <= 0:
-            raise ValueError("Maximum amount must be greater than zero")
+            self.stdout.write(self.style.ERROR("Maximum amount must be greater than zero"))
+            return
 
         if min_amount >= max_amount:
-            raise ValueError("Minimum amount must be less than maximum amount")
+            self.stdout.write(self.style.ERROR("Minimum amount must be less than maximum amount"))
+            return
+
+        if auto_score_pct < 0 or auto_score_pct > 100:
+            self.stdout.write(self.style.ERROR("Auto-score percentage must be between 0 and 100"))
+            return
 
         users = list(CustomUser.objects.filter(is_kyc_verified=True, credit_score__isnull=False))
 
@@ -90,9 +116,10 @@ class Command(BaseCommand):
             return
 
         created = 0
+        created_for_auto_scoring = 0
         self.stdout.write(f"🚀 Generating {count} mock loan applications...")
 
-        for _ in range(count):
+        for i in range(count):
             user = random.choice(users)
 
             # Generate mock loan details with more realistic ranges
@@ -126,6 +153,9 @@ class Command(BaseCommand):
                 amount_requested <= (monthly_income * Decimal(term_months) * Decimal('0.8'))  # Loan amount sanity check
             ])
 
+            # Determine if this loan should be created for auto-scoring
+            for_auto_scoring = random.randint(1, 100) <= auto_score_pct
+
             # Create LoanApplication instance
             loan = self.create_loan(
                 user=user,
@@ -134,8 +164,12 @@ class Command(BaseCommand):
                 purpose=purpose,
                 monthly_income=monthly_income,
                 existing_loans=existing_loans,
-                approved=approved
+                approved=approved,
+                for_auto_scoring=for_auto_scoring
             )
+
+            if for_auto_scoring:
+                created_for_auto_scoring += 1
 
             # Create MockExperianReport with more realistic data
             total_accounts = random.randint(1, 15)
@@ -160,3 +194,5 @@ class Command(BaseCommand):
                 self.stdout.write(f"Created {created} mock loans...")
 
         self.stdout.write(f"✅ Created {created} mock loans with approval labels.\n")
+        if created_for_auto_scoring > 0:
+            self.stdout.write(f"✅ {created_for_auto_scoring} of these loans were created for auto-scoring (ai_decision=None).\n")

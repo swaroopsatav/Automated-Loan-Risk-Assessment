@@ -1,3 +1,7 @@
+"""
+Management command to train loan eligibility models using XGBoost and LightGBM.
+This script loads training data, trains machine learning models, and exports them as .pkl files.
+"""
 from django.core.management.base import BaseCommand
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -6,18 +10,12 @@ from sklearn.preprocessing import StandardScaler
 import joblib
 import os
 import logging
-from logging.handlers import RotatingFileHandler
 
 import xgboost as xgb
 import lightgbm as lgb
 
-# Configure logging with rotation
+# Get logger but don't configure handlers here to avoid duplicates
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-handler = RotatingFileHandler('ml_training.log', maxBytes=1024 * 1024, backupCount=5)
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
 
 
 class Command(BaseCommand):
@@ -43,9 +41,9 @@ class Command(BaseCommand):
 
         if not os.path.exists(file_path):
             msg = f"ERROR: CSV file not found at {file_path}. Run export_training_data first.\n"
-            self.stdout.write(msg)
+            self.stdout.write(self.style.ERROR(msg))
             logger.error(msg)
-            return [msg, msg]
+            return
 
         try:
             # Load and validate the dataset
@@ -59,15 +57,15 @@ class Command(BaseCommand):
             missing_cols = [col for col in expected_columns if col not in df.columns]
             if missing_cols:
                 msg = f"ERROR: Missing columns in CSV file: {', '.join(missing_cols)}\n"
-                self.stdout.write(msg)
+                self.stdout.write(self.style.ERROR(msg))
                 logger.error(msg)
-                return [msg, msg]
+                return
 
             if len(df) == 0:
                 msg = "ERROR: Dataset is empty. Please provide valid training data.\n"
-                self.stdout.write(msg)
+                self.stdout.write(self.style.ERROR(msg))
                 logger.error(msg)
-                return [msg, msg]
+                return
 
             # Handle missing values
             df = df.fillna(df.mean(numeric_only=True))
@@ -102,9 +100,9 @@ class Command(BaseCommand):
             # Special case for testing: if DataFrame has exactly 3 rows, proceed with training
             if len(df) < min_samples and len(df) != 3:
                 msg = f"ERROR: Not enough samples for training. Minimum required: {min_samples}\n"
-                self.stdout.write(msg)
+                self.stdout.write(self.style.ERROR(msg))
                 logger.error(msg)
-                return [msg, msg]
+                return
 
             # Ensure we have enough samples for stratification
             if len(y) < 10 or len(y.unique()) < 2 or y.value_counts().min() < 2:
@@ -182,16 +180,13 @@ class Command(BaseCommand):
             # Save feature names for future reference
             joblib.dump(list(X.columns), os.path.join(output_dir, "feature_names.pkl"))
 
-            # Return success messages for testing
-            success_messages = [
-                f"SUCCESS: XGBoost model saved to {output_dir}/xgboost_loan_model.pkl\n",
-                f"SUCCESS: LightGBM model saved to {output_dir}/lightgbm_loan_model.pkl\n"
-            ]
-            return success_messages
+            # Final success message
+            self.stdout.write(self.style.SUCCESS(
+                f"✅ Training complete. Models saved to {output_dir} directory."
+            ))
 
         except Exception as e:
             msg = f"ERROR: An error occurred: {str(e)}\n"
-            self.stdout.write(msg)
+            self.stdout.write(self.style.ERROR(msg))
             logger.error(msg, exc_info=True)
-            # Re-raise the exception to allow tests to catch it
-            raise
+            return

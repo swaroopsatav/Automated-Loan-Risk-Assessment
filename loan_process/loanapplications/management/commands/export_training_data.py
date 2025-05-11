@@ -1,3 +1,7 @@
+"""
+Management command to export loan application data to CSV for machine learning model training.
+This script extracts and transforms data from the database into a format suitable for training ML models.
+"""
 from django.core.management.base import BaseCommand
 import csv
 from datetime import date
@@ -25,27 +29,24 @@ class Command(BaseCommand):
 
     def _open_file(self, output_file):
         """Open the output file and return a file object."""
-        return open(output_file, "w", newline="", encoding='utf-8')
+        try:
+            return open(output_file, "w", newline="", encoding='utf-8')
+        except OSError as e:
+            self.stdout.write(self.style.ERROR(f"Failed to open file {output_file}: {str(e)}"))
+            return None
 
     def handle(self, *args, **options):
-        output_file = options.get('output', options.get('output_file', 'loan_training_data.csv'))
-        # Print all options for debugging  
-        self.stdout.write(f"Options: {options}\n")
-        # Check for both 'dry_run' and 'dry-run' in options
-        dry_run = options.get('dry_run', options.get('dry-run', False))
-        self.stdout.write(f"dry_run: {dry_run}\n")
+        output_file = options.get('output', 'loan_training_data.csv')
+        dry_run = options.get('dry_run', False)
 
         # Skip file operations if dry_run is True
         if dry_run:
             self.stdout.write(f"Dry run mode - not writing to {output_file}\n")
             return
 
-        # Always open the file, even if we might return early
-        # This ensures that the _open_file method is called for testing
-        try:
-            f = self._open_file(output_file)
-        except OSError as e:
-            self.stdout.write(f"Failed to open file {output_file}: {str(e)}\n")
+        # Open the file
+        f = self._open_file(output_file)
+        if f is None:
             return
 
         # Optimize query with select_related and prefetch_related 
@@ -143,8 +144,10 @@ class Command(BaseCommand):
                 self.stdout.write(f"✅ Exported {count} loan applications to {output_file}\n")
 
         except IOError as e:
-            self.stdout.write(f"Failed to write to file {output_file}: {str(e)}\n")
+            self.stdout.write(self.style.ERROR(f"Failed to write to file {output_file}: {str(e)}"))
+            return
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"An unexpected error occurred: {str(e)}"))
+            return
         finally:
             f.close()

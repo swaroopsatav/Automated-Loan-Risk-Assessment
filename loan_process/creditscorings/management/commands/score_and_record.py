@@ -1,3 +1,7 @@
+"""
+Management command to score loan applications using AI models and record the decisions.
+This script processes eligible loan applications, calculates risk scores, and updates their status.
+"""
 from django.core.management.base import BaseCommand
 from loanapplications.models import LoanApplication
 from loanapplications.ml.scoring import score_loan_application
@@ -5,7 +9,7 @@ import logging
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 
-# Configure logging
+# Get logger but don't configure handlers here to avoid duplicates
 logger = logging.getLogger(__name__)
 
 
@@ -56,7 +60,7 @@ class Command(BaseCommand):
                             report = loan.mock_experian.latest('created_at')
                             if not report:
                                 raise ObjectDoesNotExist
-                        except (ObjectDoesNotExist, loan.mock_experian.model.DoesNotExist):
+                        except ObjectDoesNotExist:
                             raise ValueError("No Experian report found")
 
                         user = loan.user

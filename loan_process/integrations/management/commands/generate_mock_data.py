@@ -1,14 +1,17 @@
+"""
+Management command to generate mock KYC and Experian data for eligible users and loans.
+This script creates realistic mock data for testing and development purposes.
+"""
 from django.core.management.base import BaseCommand
 from faker import Faker
 import random
-from typing import List, Tuple
+from collections.abc import Sequence
 
 from users.models import CustomUser
 from loanapplications.models import LoanApplication
 from integrations.models import MockKYCRecord, MockExperianReport
 
 faker = Faker()
-
 
 class Command(BaseCommand):
     help = 'Generate mock KYC and Experian data for eligible users and loans'
@@ -17,7 +20,7 @@ class Command(BaseCommand):
         parser.add_argument('count', type=int, help='Number of mock records to generate')
         parser.add_argument('--verbose', action='store_true', help='Show detailed logs per record')
 
-    def get_eligible_records(self) -> Tuple[List[CustomUser], List[LoanApplication]]:
+    def get_eligible_records(self) -> tuple[Sequence[CustomUser], Sequence[LoanApplication]]:
         """Get eligible users and loan applications that don't have mock records yet"""
         eligible_users = list(CustomUser.objects.exclude(
             id__in=MockKYCRecord.objects.values_list('user_id', flat=True)
@@ -28,17 +31,24 @@ class Command(BaseCommand):
         return eligible_users, eligible_loans
 
     def create_mock_kyc(self, user: CustomUser) -> MockKYCRecord:
-        """Create mock KYC record for a user"""
+        """Create mock KYC record and update user compliance fields"""
+        # Update user to pass compliance
+        user.is_kyc_verified = True
+        user.id_proof = "mock_id.pdf"
+        user.address_proof = "mock_address.pdf"
+        user.income_proof = "mock_income.pdf"
+        user.save(update_fields=["is_kyc_verified", "id_proof", "address_proof", "income_proof"])
+
         return MockKYCRecord.objects.create(
             user=user,
             pan_number=faker.bothify(text='?????####?').upper(),
             pan_holder_name=faker.name().upper(),
-            pan_verified=random.choice([True, False]),
+            pan_verified=True,
             aadhaar_last_4=str(faker.random_int(min=1000, max=9999)),
-            aadhaar_verified=random.choice([True, False]),
+            aadhaar_verified=True,
             dob=faker.date_of_birth(minimum_age=21, maximum_age=60),
-            kyc_type=random.choice(['full', 'simplified']),
-            verification_status=random.choice(['verified', 'pending', 'failed']),
+            kyc_type='full',
+            verification_status='verified',
             verification_source="mock_provider",
             mock_response={"mock": "kyc_data", "timestamp": faker.iso8601()}
         )
@@ -135,3 +145,4 @@ class Command(BaseCommand):
 
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"❌ Error generating mock data: {str(e)}"))
+            return
